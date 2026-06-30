@@ -110,8 +110,8 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
           <input type="text" id="newCreatorInsta" placeholder="e.g. priyacreates (without @)" />
         </div>
         <div class="form-row">
-          <label>Profile Photo Link (from Imgur, Google Drive etc.)</label>
-          <input type="text" id="newCreatorPhoto" placeholder="https://i.imgur.com/example.jpg" />
+          <label>Profile Photo</label>
+          <input type="file" id="newCreatorPhoto" accept="image/*" />
         </div>
         <button id="addCreatorBtn" onclick="addCreator()">Add Creator</button>
       </div>
@@ -125,6 +125,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCCoxTkjdEqJJKArv8WuaZk_W8fo1RbaI8",
@@ -137,6 +138,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const ADMIN_PASSWORD = "PWX4MmEKLz6890";
   let currentTab = 'pending';
@@ -240,7 +242,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
 
     const name = nameInput.value.trim();
     const instagram = instaInput.value.trim().replace(/^@/, '');
-    const photoUrl = photoInput.value.trim();
+    const file = photoInput.files[0];
 
     if (!name || !instagram) {
       alert('Please enter both name and Instagram username.');
@@ -251,6 +253,13 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     btn.textContent = 'Adding...';
 
     try {
+      let photoUrl = '';
+      if (file) {
+        const fileRef = ref(storage, `creators/${Date.now()}_${file.name}`);
+        await uploadBytes(fileRef, file);
+        photoUrl = await getDownloadURL(fileRef);
+      }
+
       await addDoc(collection(db, 'creators'), {
         name: name,
         instagram: instagram,
