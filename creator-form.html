@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join BrandSetu — Creator Onboarding</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#5B5BF7;
+  --lavender:#F3F1FF;
+  --dark:#1A0A2E;
+  --body:#3D3347;
+  --muted:#6B5F78;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--lavender);color:var(--body);min-height:100vh}
+
+/* Header */
+.header{background:linear-gradient(135deg,var(--purple),#8B5BF7);padding:48px 20px 56px;text-align:center;color:#fff}
+.header-logo{font-size:1.5rem;font-weight:900;letter-spacing:-0.02em;margin-bottom:18px}
+.header-logo span{color:#FFD66B}
+.header h1{font-size:1.9rem;font-weight:800;margin-bottom:10px}
+.header p{font-size:1rem;opacity:0.92}
+
+.wrap{max-width:680px;margin:-32px auto 0;padding:0 16px 60px;position:relative}
+
+.intro-card{background:#fff;border-radius:18px;padding:28px 26px;box-shadow:0 10px 30px rgba(91,91,247,0.12);margin-bottom:28px}
+.intro-card h2{font-size:1.2rem;color:var(--dark);margin-bottom:10px}
+.intro-card p{font-size:0.92rem;line-height:1.6;color:var(--muted);margin-bottom:10px}
+.warning-box{background:#FFF8E6;border:1px solid #FFE0A3;border-radius:10px;padding:12px 14px;font-size:0.85rem;color:#8A6500;margin-top:14px}
+
+form{background:#fff;border-radius:18px;padding:32px 26px;box-shadow:0 10px 30px rgba(91,91,247,0.08)}
+
+.section-block{margin-bottom:32px}
+.section-block:last-of-type{margin-bottom:0}
+.section-num{display:inline-block;font-size:0.72rem;font-weight:800;color:var(--purple);background:var(--lavender);padding:4px 12px;border-radius:20px;letter-spacing:0.04em;margin-bottom:8px}
+.section-title{font-size:1.15rem;font-weight:800;color:var(--dark);margin-bottom:18px;padding-bottom:10px;border-bottom:1.5px solid var(--lavender)}
+
+.field{margin-bottom:18px}
+.field label{display:block;font-size:0.86rem;font-weight:700;color:var(--body);margin-bottom:6px}
+.field .hint{font-weight:400;color:var(--muted);font-size:0.78rem;display:block;margin-top:2px}
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="number"],
+.field input[type="url"],
+.field select,
+.field textarea{
+  width:100%;padding:11px 14px;border:1.5px solid #E4DFF5;border-radius:9px;font-size:0.92rem;font-family:inherit;outline:none;color:var(--dark);background:#fff;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
+.field textarea{resize:vertical;min-height:80px}
+
+.checkbox-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.checkbox-item{display:flex;align-items:center;gap:8px;background:var(--lavender);padding:9px 12px;border-radius:8px;cursor:pointer;font-size:0.86rem}
+.checkbox-item input{width:16px;height:16px;accent-color:var(--purple);flex-shrink:0}
+.radio-grid{display:flex;flex-wrap:wrap;gap:10px}
+.radio-item{display:flex;align-items:center;gap:7px;background:var(--lavender);padding:9px 14px;border-radius:8px;cursor:pointer;font-size:0.86rem}
+.radio-item input{accent-color:var(--purple)}
+
+.yesno-toggle{display:flex;gap:10px;margin-bottom:14px}
+.yesno-btn{flex:1;padding:10px;text-align:center;border:1.5px solid #E4DFF5;border-radius:9px;font-weight:700;font-size:0.88rem;cursor:pointer;color:var(--muted)}
+.yesno-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+#prevBrandsField{display:none}
+
+.confirm-row{display:flex;align-items:center;gap:10px;background:var(--lavender);padding:14px 16px;border-radius:10px;margin-bottom:24px}
+.confirm-row input{width:18px;height:18px;accent-color:var(--purple)}
+.confirm-row label{font-size:0.88rem;font-weight:600;color:var(--dark)}
+
+.submit-btn{width:100%;padding:15px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:1rem;cursor:pointer;transition:background 0.2s}
+.submit-btn:hover{background:#4747e0}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed}
+
+/* Success screen */
+.success-screen{display:none;text-align:center;padding:40px 26px}
+.success-screen.show{display:block}
+.success-icon{width:64px;height:64px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success-screen h2{font-size:1.3rem;color:var(--dark);margin-bottom:10px}
+.success-screen p{font-size:0.92rem;color:var(--muted);line-height:1.6;margin-bottom:6px}
+.wa-btn{display:inline-block;margin-top:18px;padding:13px 26px;background:#25D366;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:0.92rem}
+
+@media(max-width:480px){
+  .checkbox-grid{grid-template-columns:1fr}
+  .header h1{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Brand<span>Setu</span></div>
+  <h1>Join BrandSetu</h1>
+  <p>Connect with Growing Brands 🚀</p>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card">
+    <h2>Welcome to BrandSetu! 🎉</h2>
+    <p>Thank you for your interest in joining our creator network. We're excited to connect talented creators with growing brands across Beauty, Fashion, Lifestyle, Skincare, Haircare, Wellness, Food, Tech, and more.</p>
+    <p>Please fill out this form carefully. The information you provide helps us match you with the most relevant collaborations.</p>
+    <div class="warning-box">⚠️ Submitting this form does not guarantee a collaboration. Brand selections depend on campaign requirements and audience fit.</div>
+  </div>
+
+  <form id="creatorForm">
+
+    <!-- SECTION 1 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 1</span>
+      <h3 class="section-title">Basic Information</h3>
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="fullName" required />
+      </div>
+      <div class="field">
+        <label>Email Address *</label>
+        <input type="email" id="email" required />
+      </div>
+      <div class="field">
+        <label>WhatsApp Number *</label>
+        <input type="tel" id="whatsapp" required />
+      </div>
+      <div class="field">
+        <label>City *</label>
+        <input type="text" id="city" required />
+      </div>
+      <div class="field">
+        <label>State *</label>
+        <input type="text" id="state" required />
+      </div>
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="age" min="13" max="99" />
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 2</span>
+      <h3 class="section-title">Instagram Details</h3>
+      <div class="field">
+        <label>Instagram Username *</label>
+        <input type="text" id="igUsername" placeholder="@yourusername" required />
+      </div>
+      <div class="field">
+        <label>Instagram Profile Link *</label>
+        <input type="url" id="igLink" placeholder="https://instagram.com/yourusername" required />
+      </div>
+      <div class="field">
+        <label>Followers *</label>
+        <input type="text" id="followers" placeholder="e.g. 25K" required />
+      </div>
+      <div class="field">
+        <label>Content Niche</label>
+        <div class="checkbox-grid" id="nicheGrid">
+          <label class="checkbox-item"><input type="checkbox" value="Beauty" />Beauty</label>
+          <label class="checkbox-item"><input type="checkbox" value="Fashion" />Fashion</label>
+          <label class="checkbox-item"><input type="checkbox" value="Lifestyle" />Lifestyle</label>
+          <label class="checkbox-item"><input type="checkbox" value="UGC" />UGC</label>
+          <label class="checkbox-item"><input type="checkbox" value="Makeup" />Makeup</label>
+          <label class="checkbox-item"><input type="checkbox" value="Haircare" />Haircare</label>
+          <label class="checkbox-item"><input type="checkbox" value="Skincare" />Skincare</label>
+          <label class="checkbox-item"><input type="checkbox" value="Fitness" />Fitness</label>
+          <label class="checkbox-item"><input type="checkbox" value="Food" />Food</label>
+          <label class="checkbox-item"><input type="checkbox" value="Travel" />Travel</label>
+          <label class="checkbox-item"><input type="checkbox" value="Tech" />Tech</label>
+          <label class="checkbox-item"><input type="checkbox" value="Parenting" />Parenting</label>
+          <label class="checkbox-item"><input type="checkbox" value="Other" />Other</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 3</span>
+      <h3 class="section-title">Performance</h3>
+      <div class="field">
+        <label>Average Reel Views *</label>
+        <input type="text" id="reelViews" required />
+      </div>
+      <div class="field">
+        <label>Average Story Views</label>
+        <input type="text" id="storyViews" />
+      </div>
+      <div class="field">
+        <label>Average Monthly Reach</label>
+        <input type="text" id="monthlyReach" />
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 4</span>
+      <h3 class="section-title">Audience</h3>
+      <div class="field">
+        <label>Instagram Insights Screenshot
+          <span class="hint">Upload to imgur.com or postimages.org, then paste the direct image link here</span>
+        </label>
+        <input type="url" id="insightsLink" placeholder="https://i.imgur.com/example.jpg" />
+      </div>
+      <div class="field">
+        <label>Top Audience City</label>
+        <input type="text" id="audienceCity" />
+      </div>
+      <div class="field">
+        <label>Top Audience Country</label>
+        <input type="text" id="audienceCountry" />
+      </div>
+      <div class="field">
+        <label>Audience Gender</label>
+        <div class="radio-grid">
+          <label class="radio-item"><input type="radio" name="audienceGender" value="Mostly Female" />Mostly Female</label>
+          <label class="radio-item"><input type="radio" name="audienceGender" value="Mostly Male" />Mostly Male</label>
+          <label class="radio-item"><input type="radio" name="audienceGender" value="Mixed" />Mixed</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Age Group</label>
+        <div class="radio-grid">
+          <label class="radio-item"><input type="radio" name="ageGroup" value="18–24" />18–24</label>
+          <label class="radio-item"><input type="radio" name="ageGroup" value="25–34" />25–34</label>
+          <label class="radio-item"><input type="radio" name="ageGroup" value="35–44" />35–44</label>
+          <label class="radio-item"><input type="radio" name="ageGroup" value="45+" />45+</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 5</span>
+      <h3 class="section-title">Previous Collaborations</h3>
+      <div class="field">
+        <label>Have you worked with brands before?</label>
+        <div class="yesno-toggle">
+          <div class="yesno-btn" id="prevYesBtn" onclick="setPrevWorked(true)">Yes</div>
+          <div class="yesno-btn active" id="prevNoBtn" onclick="setPrevWorked(false)">No</div>
+        </div>
+      </div>
+      <div class="field" id="prevBrandsField">
+        <label>Brand Names</label>
+        <input type="text" id="prevBrands" placeholder="e.g. Glowveda, Mamaearth" />
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 6</span>
+      <h3 class="section-title">Rates</h3>
+      <div class="field">
+        <label>1 Reel Charges</label>
+        <input type="text" id="reelCharges" placeholder="₹" />
+      </div>
+      <div class="field">
+        <label>1 Story Charges</label>
+        <input type="text" id="storyCharges" placeholder="₹" />
+      </div>
+      <div class="field">
+        <label>UGC Video Charges</label>
+        <input type="text" id="ugcCharges" placeholder="₹" />
+      </div>
+      <div class="field">
+        <label>Monthly Package (Optional)</label>
+        <input type="text" id="monthlyPackage" placeholder="₹" />
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 7</span>
+      <h3 class="section-title">Collaboration Preferences</h3>
+      <div class="field">
+        <label>Which collaborations are you interested in?</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" id="collabPaid" value="Paid" />Paid</label>
+          <label class="checkbox-item"><input type="checkbox" id="collabBarter" value="Barter" />Barter</label>
+          <label class="checkbox-item"><input type="checkbox" id="collabLongTerm" value="Long-Term Partnerships" />Long-Term Partnerships</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 8</span>
+      <h3 class="section-title">Portfolio</h3>
+      <div class="field">
+        <label>Share your best 3 Instagram Reel Links</label>
+        <input type="url" id="reelLink1" placeholder="Reel link 1" style="margin-bottom:8px" />
+        <input type="url" id="reelLink2" placeholder="Reel link 2" style="margin-bottom:8px" />
+        <input type="url" id="reelLink3" placeholder="Reel link 3" />
+      </div>
+      <div class="field">
+        <label>Portfolio / Drive Link (Optional)</label>
+        <input type="url" id="portfolioLink" />
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section-block">
+      <span class="section-num">SECTION 9</span>
+      <h3 class="section-title">Anything brands should know about you?</h3>
+      <div class="field">
+        <textarea id="aboutYou" placeholder="Tell us anything else that's relevant..."></textarea>
+      </div>
+    </div>
+
+    <div class="confirm-row">
+      <input type="checkbox" id="confirmCheck" required />
+      <label for="confirmCheck">I confirm that the above information is correct.</label>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Submit Application →</button>
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M6 16l7 7 13-13" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>🎉 Welcome to BrandSetu!</h2>
+    <p>Thank you for submitting your profile.</p>
+    <p>Our team will review your information and reach out whenever a suitable brand collaboration matches your profile.</p>
+    <p style="margin-top:14px;font-weight:700;color:var(--dark)">Welcome aboard! 🚀</p>
+    <a href="#" class="wa-btn" id="waBtn" target="_blank" rel="noopener">📲 Also Send via WhatsApp</a>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCCoxTkjdEqJJKArv8WuaZk_W8fo1RbaI8",
+    authDomain: "brandsetu-44bea.firebaseapp.com",
+    projectId: "brandsetu-44bea",
+    storageBucket: "brandsetu-44bea.firebasestorage.app",
+    messagingSenderId: "416775002186",
+    appId: "1:416775002186:web:fc0f845c282005fe6d6eb3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const WHATSAPP_NUMBER = "919508922716"; // BrandSetu's WhatsApp number (country code + number, no + or spaces)
+
+  let prevWorked = false;
+  window.setPrevWorked = function(val) {
+    prevWorked = val;
+    document.getElementById('prevYesBtn').classList.toggle('active', val);
+    document.getElementById('prevNoBtn').classList.toggle('active', !val);
+    document.getElementById('prevBrandsField').style.display = val ? 'block' : 'none';
+  };
+
+  document.getElementById('creatorForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const niches = Array.from(document.querySelectorAll('#nicheGrid input:checked')).map(el => el.value);
+    const collabPrefs = [];
+    if (document.getElementById('collabPaid').checked) collabPrefs.push('Paid');
+    if (document.getElementById('collabBarter').checked) collabPrefs.push('Barter');
+    if (document.getElementById('collabLongTerm').checked) collabPrefs.push('Long-Term Partnerships');
+
+    const audienceGenderEl = document.querySelector('input[name="audienceGender"]:checked');
+    const ageGroupEl = document.querySelector('input[name="ageGroup"]:checked');
+
+    const data = {
+      fullName: document.getElementById('fullName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      whatsapp: document.getElementById('whatsapp').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value.trim(),
+      age: document.getElementById('age').value.trim(),
+      igUsername: document.getElementById('igUsername').value.trim(),
+      igLink: document.getElementById('igLink').value.trim(),
+      followers: document.getElementById('followers').value.trim(),
+      niches: niches,
+      reelViews: document.getElementById('reelViews').value.trim(),
+      storyViews: document.getElementById('storyViews').value.trim(),
+      monthlyReach: document.getElementById('monthlyReach').value.trim(),
+      insightsLink: document.getElementById('insightsLink').value.trim(),
+      audienceCity: document.getElementById('audienceCity').value.trim(),
+      audienceCountry: document.getElementById('audienceCountry').value.trim(),
+      audienceGender: audienceGenderEl ? audienceGenderEl.value : '',
+      ageGroup: ageGroupEl ? ageGroupEl.value : '',
+      prevWorked: prevWorked,
+      prevBrands: prevWorked ? document.getElementById('prevBrands').value.trim() : '',
+      reelCharges: document.getElementById('reelCharges').value.trim(),
+      storyCharges: document.getElementById('storyCharges').value.trim(),
+      ugcCharges: document.getElementById('ugcCharges').value.trim(),
+      monthlyPackage: document.getElementById('monthlyPackage').value.trim(),
+      collabPrefs: collabPrefs,
+      reelLink1: document.getElementById('reelLink1').value.trim(),
+      reelLink2: document.getElementById('reelLink2').value.trim(),
+      reelLink3: document.getElementById('reelLink3').value.trim(),
+      portfolioLink: document.getElementById('portfolioLink').value.trim(),
+      aboutYou: document.getElementById('aboutYou').value.trim(),
+      status: 'new',
+      submittedAt: serverTimestamp()
+    };
+
+    try {
+      await addDoc(collection(db, 'creatorApplications'), data);
+
+      const waText = `Hi BrandSetu! 👋 I'm submitting my Creator Application:
+
+*Name:* ${data.fullName}
+*Email:* ${data.email}
+*WhatsApp:* ${data.whatsapp}
+*City/State:* ${data.city}, ${data.state}
+*Instagram:* ${data.igUsername} (${data.igLink})
+*Followers:* ${data.followers}
+*Niche:* ${data.niches.join(', ')}
+*Avg Reel Views:* ${data.reelViews}
+*Collaboration Preference:* ${data.collabPrefs.join(', ')}
+*Previous Brands:* ${data.prevWorked ? data.prevBrands : 'None'}
+
+Looking forward to collaborating! 🚀`;
+
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+      document.getElementById('waBtn').href = waUrl;
+
+      document.getElementById('creatorForm').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      setTimeout(() => { window.open(waUrl, '_blank'); }, 600);
+
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'Submit Application →';
+      alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
+    }
+  });
+</script>
+</body>
+</html>
