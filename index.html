@@ -175,6 +175,44 @@ h2 em{color:var(--purple);font-style:normal}
 .badge-paid{background:#e8f5e9;color:#2e7d32}
 .badge-barter{background:#fff3e0;color:#e65100}
 
+/* ── REELS ── */
+.reels{background:#fff}
+.reels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.reel-card{border-radius:16px;overflow:hidden;background:#000;position:relative;aspect-ratio:9/16;cursor:pointer;border:2px solid rgba(123,47,247,0.1)}
+.reel-card img{width:100%;height:100%;object-fit:cover;opacity:0.85;transition:opacity 0.2s}
+.reel-card:hover img{opacity:0.65}
+.reel-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:rgba(255,255,255,0.92);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.reel-play svg{margin-left:4px}
+.reel-brand{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.7));color:#fff;font-size:0.8rem;font-weight:700}
+.reels-empty{text-align:center;color:var(--muted);padding:40px;background:var(--bg);border-radius:16px;border:1px dashed rgba(123,47,247,0.2);margin-top:48px}
+
+/* ── UPDATES ── */
+.updates{background:var(--bg)}
+.updates-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:48px}
+.update-card{background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(123,47,247,0.08)}
+.update-badge{display:inline-block;font-size:0.7rem;font-weight:800;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:12px}
+.badge-campaign{background:#ede6fd;color:#7B2FF7}
+.badge-news{background:#fff3e0;color:#e65100}
+.badge-collab{background:#e8f5e9;color:#2e7d32}
+.update-title{font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:8px}
+.update-desc{font-size:0.88rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.update-meta{font-size:0.75rem;color:var(--muted)}
+.update-comments-toggle{font-size:0.8rem;font-weight:700;color:var(--purple);cursor:pointer;background:none;border:none;padding:0;margin-top:8px}
+.update-comments{margin-top:14px;border-top:1px solid var(--bg);padding-top:14px;display:none}
+.update-comments.open{display:block}
+.comment-item{display:flex;gap:10px;margin-bottom:12px}
+.comment-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--violet));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.78rem;color:#fff;flex-shrink:0}
+.comment-body{flex:1}
+.comment-name{font-size:0.82rem;font-weight:700;color:var(--dark)}
+.comment-role{font-size:0.72rem;color:var(--muted);margin-left:6px}
+.comment-text{font-size:0.84rem;color:var(--body);margin-top:2px;line-height:1.5}
+.comment-form{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.comment-form input,.comment-form textarea{padding:9px 12px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-size:0.84rem;font-family:inherit;outline:none}
+.comment-form input:focus,.comment-form textarea:focus{border-color:var(--purple)}
+.comment-form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.comment-submit{padding:9px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.84rem;cursor:pointer}
+.updates-empty{text-align:center;color:var(--muted);padding:40px;background:#fff;border-radius:16px;border:1px dashed rgba(123,47,247,0.2);margin-top:48px}
+
 /* ── REVIEWS ── */
 .reviews{background:var(--bg)}
 .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
@@ -239,6 +277,8 @@ footer{background:#0F0720;padding:40px 5vw 28px}
   .testi-grid{grid-template-columns:1fr}
   .reviews-grid{grid-template-columns:1fr}
   .creators-grid{grid-template-columns:repeat(2,1fr)}
+  .reels-grid{grid-template-columns:repeat(2,1fr)}
+  .updates-grid{grid-template-columns:1fr}
   .trust-pillars{flex-direction:column;align-items:center}
   .pillar{max-width:360px;width:100%}
   .stat-item{padding:20px 24px;border-right:none;border-bottom:1px solid rgba(123,47,247,0.08)}
@@ -343,15 +383,15 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <span class="stat-num" id="stat1">15+</span>
+      <span class="stat-num" id="stat1">100+</span>
       <span class="stat-label" data-en="Creators in Network" data-hi="नेटवर्क में क्रिएटर्स">Creators in Network</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" id="stat2">6+</span>
+      <span class="stat-num" id="stat2">10+</span>
       <span class="stat-label" data-en="Brand Partners" data-hi="ब्रांड पार्टनर">Brand Partners</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" id="stat3">9+</span>
+      <span class="stat-num" id="stat3">60+</span>
       <span class="stat-label" data-en="Collabs Completed" data-hi="पूरे हुए सहयोग">Collabs Completed</span>
     </div>
   </div>
@@ -559,6 +599,26 @@ footer{background:#0F0720;padding:40px 5vw 28px}
     <h2><span data-en="Creators <em>With Us</em>" data-hi="हमारे साथ <em>क्रिएटर्स</em>">Creators <em>With Us</em></span></h2>
     <div class="creators-grid" id="creatorsGrid"></div>
     <div class="creators-empty" id="creatorsEmpty" style="display:none" data-en="Creator network coming soon!" data-hi="क्रिएटर नेटवर्क जल्द आ रहा है!">Creator network coming soon!</div>
+  </div>
+</section>
+
+<!-- REELS -->
+<section class="reels" id="reels">
+  <div class="section-inner">
+    <div class="section-label" data-en="Collab Reels" data-hi="कोलैब रील्स">Collab Reels</div>
+    <h2><span data-en="See Our <em>Work in Action</em>" data-hi="हमारा <em>काम देखें</em>">See Our <em>Work in Action</em></span></h2>
+    <div class="reels-grid" id="reelsGrid"></div>
+    <div class="reels-empty" id="reelsEmpty" style="display:none">Collab reels coming soon! 🎬</div>
+  </div>
+</section>
+
+<!-- UPDATES -->
+<section class="updates" id="updates">
+  <div class="section-inner">
+    <div class="section-label" data-en="Latest Updates" data-hi="ताज़ा अपडेट">Latest Updates</div>
+    <h2><span data-en="Campaigns & <em>Highlights</em>" data-hi="कैंपेन और <em>हाइलाइट्स</em>">Campaigns & <em>Highlights</em></span></h2>
+    <div class="updates-grid" id="updatesGrid"></div>
+    <div class="updates-empty" id="updatesEmpty" style="display:none">Updates coming soon! 📢</div>
   </div>
 </section>
 
@@ -924,7 +984,7 @@ async function handleSubmit(e, modalId) {
 }
 
 // ── STATS COUNTER ──
-const statTargets = { stat1: 15, stat2: 6, stat3: 9 };
+const statTargets = { stat1: 100, stat2: 10, stat3: 60 };
 let statsDone = false;
 function animateCount(id, target) {
   let current = 0;
@@ -1111,6 +1171,136 @@ if (window.__bsDb) {
 } else {
   window.addEventListener('bsFirebaseReady', loadCreators, { once: true });
 }
+
+// ── LOAD REELS ──
+async function loadReels() {
+  const grid = document.getElementById('reelsGrid');
+  const empty = document.getElementById('reelsEmpty');
+  if (!grid) return;
+  try {
+    const snap = await window.__bsGetDocs(window.__bsCollection(window.__bsDb, 'reels'));
+    if (snap.empty) { empty.style.display = 'block'; return; }
+    const docs = [];
+    snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+    docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    let html = '';
+    docs.forEach(r => {
+      const thumb = r.thumbnail || 'https://placehold.co/300x533/1a0a2e/ffffff?text=▶';
+      html += `
+        <a class="reel-card" href="${escapeHtml(r.link || '#')}" target="_blank" rel="noopener">
+          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(r.brand || 'Collab Reel')}" loading="lazy" />
+          <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#7B2FF7"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <div class="reel-brand">${escapeHtml(r.brand || '')}</div>
+        </a>`;
+    });
+    grid.innerHTML = html;
+  } catch(err) { console.error(err); empty.style.display = 'block'; }
+}
+
+if (window.__bsDb) { loadReels(); }
+else { window.addEventListener('bsFirebaseReady', loadReels, { once: true }); }
+
+// ── LOAD UPDATES + COMMENTS ──
+async function loadUpdates() {
+  const grid = document.getElementById('updatesGrid');
+  const empty = document.getElementById('updatesEmpty');
+  if (!grid) return;
+  try {
+    const snap = await window.__bsGetDocs(window.__bsCollection(window.__bsDb, 'updates'));
+    if (snap.empty) { empty.style.display = 'block'; return; }
+    const docs = [];
+    snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+    docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    let html = '';
+    docs.forEach(u => {
+      const badgeClass = u.type === 'campaign' ? 'badge-campaign' : u.type === 'collab' ? 'badge-collab' : 'badge-news';
+      const badgeLabel = u.type === 'campaign' ? '🚀 Campaign' : u.type === 'collab' ? '🤝 Collab' : '📢 News';
+      html += `
+        <div class="update-card" id="update-${u.id}">
+          <span class="update-badge ${badgeClass}">${badgeLabel}</span>
+          <div class="update-title">${escapeHtml(u.title || '')}</div>
+          <div class="update-desc">${escapeHtml(u.description || '')}</div>
+          <div class="update-meta">Posted by BrandSetu</div>
+          <button class="update-comments-toggle" onclick="toggleComments('${u.id}')">💬 View & Add Comments</button>
+          <div class="update-comments" id="comments-${u.id}">
+            <div id="commentsList-${u.id}"><p style="font-size:0.82rem;color:var(--muted)">Loading comments...</p></div>
+            <div class="comment-form">
+              <div class="comment-form-row">
+                <input type="text" id="cname-${u.id}" placeholder="Your Name *" />
+                <input type="text" id="crole-${u.id}" placeholder="Role (Creator / Brand)" />
+              </div>
+              <input type="text" id="cinsta-${u.id}" placeholder="Instagram handle (optional)" />
+              <textarea id="ctext-${u.id}" rows="2" placeholder="Write your comment..."></textarea>
+              <button class="comment-submit" onclick="submitComment('${u.id}')">Post Comment</button>
+            </div>
+          </div>
+        </div>`;
+    });
+    grid.innerHTML = html;
+  } catch(err) { console.error(err); empty.style.display = 'block'; }
+}
+
+window.toggleComments = async function(updateId) {
+  const box = document.getElementById(`comments-${updateId}`);
+  box.classList.toggle('open');
+  if (box.classList.contains('open')) {
+    await loadComments(updateId);
+  }
+};
+
+async function loadComments(updateId) {
+  const list = document.getElementById(`commentsList-${updateId}`);
+  try {
+    const q = window.__bsQuery(
+      window.__bsCollection(window.__bsDb, 'comments'),
+      window.__bsWhere('updateId', '==', updateId),
+      window.__bsWhere('status', '==', 'approved')
+    );
+    const snap = await window.__bsGetDocs(q);
+    if (snap.empty) { list.innerHTML = '<p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px">No comments yet — be the first!</p>'; return; }
+    const docs = [];
+    snap.forEach(d => docs.push(d.data()));
+    docs.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+    let html = '';
+    docs.forEach(c => {
+      const initial = (c.name || '?').charAt(0).toUpperCase();
+      html += `
+        <div class="comment-item">
+          <div class="comment-avatar">${escapeHtml(initial)}</div>
+          <div class="comment-body">
+            <span class="comment-name">${escapeHtml(c.name || '')}</span>
+            <span class="comment-role">${escapeHtml(c.role ? '· ' + c.role : '')}</span>
+            ${c.instagram ? `<a href="https://instagram.com/${escapeHtml(c.instagram.replace('@',''))}" target="_blank" style="font-size:0.72rem;color:var(--purple);margin-left:6px">@${escapeHtml(c.instagram.replace('@',''))}</a>` : ''}
+            <div class="comment-text">${escapeHtml(c.text || '')}</div>
+          </div>
+        </div>`;
+    });
+    list.innerHTML = html;
+  } catch(err) { list.innerHTML = '<p style="font-size:0.82rem;color:var(--muted)">Could not load comments.</p>'; }
+}
+
+window.submitComment = async function(updateId) {
+  const name = document.getElementById(`cname-${updateId}`).value.trim();
+  const role = document.getElementById(`crole-${updateId}`).value.trim();
+  const instagram = document.getElementById(`cinsta-${updateId}`).value.trim();
+  const text = document.getElementById(`ctext-${updateId}`).value.trim();
+  if (!name || !text) { alert('Please enter your name and comment.'); return; }
+  try {
+    await window.__bsAddDoc(window.__bsCollection(window.__bsDb, 'comments'), {
+      updateId, name, role, instagram, text,
+      status: 'pending',
+      createdAt: window.__bsServerTimestamp()
+    });
+    document.getElementById(`cname-${updateId}`).value = '';
+    document.getElementById(`crole-${updateId}`).value = '';
+    document.getElementById(`cinsta-${updateId}`).value = '';
+    document.getElementById(`ctext-${updateId}`).value = '';
+    alert('✅ Comment submitted! It will appear after approval.');
+  } catch(err) { alert('Failed to post comment. Please try again.'); }
+};
+
+if (window.__bsDb) { loadUpdates(); }
+else { window.addEventListener('bsFirebaseReady', loadUpdates, { once: true }); }
 </script>
 </body>
 </html>
