@@ -102,6 +102,9 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
       <div class="section-tab active" data-section="reviews" onclick="switchSection('reviews')">⭐ Reviews</div>
       <div class="section-tab" data-section="creators" onclick="switchSection('creators')">👥 Creators</div>
       <div class="section-tab" data-section="applications" onclick="switchSection('applications')">📋 Applications</div>
+      <div class="section-tab" data-section="reels" onclick="switchSection('reels')">🎬 Reels</div>
+      <div class="section-tab" data-section="updates" onclick="switchSection('updates')">📢 Updates</div>
+      <div class="section-tab" data-section="comments" onclick="switchSection('comments')">💬 Comments</div>
     </div>
 
     <!-- REVIEWS SECTION -->
@@ -141,8 +144,48 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
       <div id="applicationsList"></div>
     </div>
 
-  </div>
+    <!-- REELS SECTION -->
+    <div id="reelsSection" style="display:none">
+      <div class="add-creator-box">
+        <h3>🎬 Add Collab Reel</h3>
+        <div class="form-row"><label>Brand Name</label><input type="text" id="reelBrand" placeholder="e.g. Glowveda Skincare" /></div>
+        <div class="form-row"><label>Instagram Reel Link *</label><input type="text" id="reelLink" placeholder="https://www.instagram.com/reel/..." /></div>
+        <div class="form-row"><label>Thumbnail Image Link (optional) — <small style="font-weight:400;color:#6B5F78">postimages.org se direct link</small></label><input type="text" id="reelThumb" placeholder="https://i.postimg.cc/..." /></div>
+        <button id="addReelBtn" onclick="addReel()">Add Reel</button>
+      </div>
+      <div id="reelsList"></div>
+    </div>
 
+    <!-- UPDATES SECTION -->
+    <div id="updatesSection" style="display:none">
+      <div class="add-creator-box">
+        <h3>📢 Post New Update</h3>
+        <div class="form-row">
+          <label>Type</label>
+          <select id="updateType" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-size:0.9rem">
+            <option value="campaign">🚀 Upcoming Campaign</option>
+            <option value="collab">🤝 Collab Completed</option>
+            <option value="news">📢 News / Announcement</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Title *</label><input type="text" id="updateTitle" placeholder="e.g. Exciting new campaign for beauty creators!" /></div>
+        <div class="form-row"><label>Description *</label><textarea id="updateDesc" rows="3" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-family:inherit;font-size:0.9rem;outline:none" placeholder="Details about the campaign or update..."></textarea></div>
+        <button id="addUpdateBtn" onclick="addUpdate()">Post Update</button>
+      </div>
+      <div id="updatesList"></div>
+    </div>
+
+    <!-- COMMENTS SECTION -->
+    <div id="commentsSection" style="display:none">
+      <p style="font-size:0.88rem;color:#6B5F78;margin-bottom:18px">Comments on Updates. Approve karo tabhi website pe dikhega.</p>
+      <div class="tabs" style="margin-bottom:16px">
+        <div class="tab active" id="cmtTabPending" onclick="switchCommentTab('pending')">Pending</div>
+        <div class="tab" id="cmtTabApproved" onclick="switchCommentTab('approved')">Approved</div>
+      </div>
+      <div id="commentsList"></div>
+    </div>
+
+  </div>
 </div>
 
 <script type="module">
@@ -249,11 +292,158 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
   // ── SECTION SWITCHER (Reviews vs Creators) ──
   window.switchSection = function(section) {
     document.querySelectorAll('.section-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-section') === section));
-    document.getElementById('reviewsSection').style.display = section === 'reviews' ? 'block' : 'none';
-    document.getElementById('creatorsSection').style.display = section === 'creators' ? 'block' : 'none';
-    document.getElementById('applicationsSection').style.display = section === 'applications' ? 'block' : 'none';
+    ['reviews','creators','applications','reels','updates','comments'].forEach(s => {
+      const el = document.getElementById(s + 'Section');
+      if (el) el.style.display = section === s ? 'block' : 'none';
+    });
     if (section === 'creators') loadCreators();
     if (section === 'applications') loadApplications();
+    if (section === 'reels') loadReels();
+    if (section === 'updates') loadAdminUpdates();
+    if (section === 'comments') loadAdminComments('pending');
+  };
+
+  // ── REELS ──
+  window.addReel = async function() {
+    const brand = document.getElementById('reelBrand').value.trim();
+    const link = document.getElementById('reelLink').value.trim();
+    const thumbnail = document.getElementById('reelThumb').value.trim();
+    const btn = document.getElementById('addReelBtn');
+    if (!link) { alert('Please enter the reel link.'); return; }
+    btn.disabled = true; btn.textContent = 'Adding...';
+    try {
+      await addDoc(collection(db, 'reels'), { brand, link, thumbnail, createdAt: serverTimestamp() });
+      document.getElementById('reelBrand').value = '';
+      document.getElementById('reelLink').value = '';
+      document.getElementById('reelThumb').value = '';
+      loadReels();
+    } catch(err) { alert('Failed to add reel.'); }
+    finally { btn.disabled = false; btn.textContent = 'Add Reel'; }
+  };
+
+  async function loadReels() {
+    const list = document.getElementById('reelsList');
+    list.innerHTML = '<p class="empty-state">Loading...</p>';
+    try {
+      const snap = await getDocs(collection(db, 'reels'));
+      if (snap.empty) { list.innerHTML = '<p class="empty-state">No reels added yet.</p>'; return; }
+      let html = '';
+      snap.forEach(d => {
+        const r = d.data();
+        html += `<div class="creator-row">
+          <div class="creator-row-info">
+            <div class="creator-row-name">${escapeHtml(r.brand || 'Reel')}</div>
+            <div class="creator-row-handle"><a href="${escapeHtml(r.link)}" target="_blank" style="color:#7B2FF7">View Reel ↗</a></div>
+          </div>
+          <button class="btn-sm btn-delete" onclick="deleteReel('${d.id}')">🗑 Remove</button>
+        </div>`;
+      });
+      list.innerHTML = html;
+    } catch(err) { list.innerHTML = '<p class="empty-state">Failed to load.</p>'; }
+  }
+
+  window.deleteReel = async function(id) {
+    if (!confirm('Remove this reel?')) return;
+    await deleteDoc(doc(db, 'reels', id));
+    loadReels();
+  };
+
+  // ── UPDATES ──
+  window.addUpdate = async function() {
+    const type = document.getElementById('updateType').value;
+    const title = document.getElementById('updateTitle').value.trim();
+    const description = document.getElementById('updateDesc').value.trim();
+    const btn = document.getElementById('addUpdateBtn');
+    if (!title || !description) { alert('Please fill title and description.'); return; }
+    btn.disabled = true; btn.textContent = 'Posting...';
+    try {
+      await addDoc(collection(db, 'updates'), { type, title, description, createdAt: serverTimestamp() });
+      document.getElementById('updateTitle').value = '';
+      document.getElementById('updateDesc').value = '';
+      loadAdminUpdates();
+    } catch(err) { alert('Failed to post update.'); }
+    finally { btn.disabled = false; btn.textContent = 'Post Update'; }
+  };
+
+  async function loadAdminUpdates() {
+    const list = document.getElementById('updatesList');
+    list.innerHTML = '<p class="empty-state">Loading...</p>';
+    try {
+      const snap = await getDocs(collection(db, 'updates'));
+      if (snap.empty) { list.innerHTML = '<p class="empty-state">No updates posted yet.</p>'; return; }
+      const docs = [];
+      snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+      docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      let html = '';
+      docs.forEach(u => {
+        html += `<div class="creator-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+          <div style="display:flex;justify-content:space-between;width:100%">
+            <div>
+              <div class="creator-row-name">${escapeHtml(u.title)}</div>
+              <div class="creator-row-handle">${u.type === 'campaign' ? '🚀 Campaign' : u.type === 'collab' ? '🤝 Collab' : '📢 News'}</div>
+            </div>
+            <button class="btn-sm btn-delete" onclick="deleteUpdate('${u.id}')">🗑 Delete</button>
+          </div>
+          <p style="font-size:0.82rem;color:#6B5F78">${escapeHtml(u.description)}</p>
+        </div>`;
+      });
+      list.innerHTML = html;
+    } catch(err) { list.innerHTML = '<p class="empty-state">Failed to load.</p>'; }
+  }
+
+  window.deleteUpdate = async function(id) {
+    if (!confirm('Delete this update?')) return;
+    await deleteDoc(doc(db, 'updates', id));
+    loadAdminUpdates();
+  };
+
+  // ── COMMENTS ──
+  let currentCommentTab = 'pending';
+  window.switchCommentTab = function(tab) {
+    currentCommentTab = tab;
+    document.getElementById('cmtTabPending').classList.toggle('active', tab === 'pending');
+    document.getElementById('cmtTabApproved').classList.toggle('active', tab === 'approved');
+    loadAdminComments(tab);
+  };
+
+  async function loadAdminComments(status) {
+    const list = document.getElementById('commentsList');
+    list.innerHTML = '<p class="empty-state">Loading...</p>';
+    try {
+      const q = query(collection(db, 'comments'), where('status', '==', status));
+      const snap = await getDocs(q);
+      if (snap.empty) { list.innerHTML = `<p class="empty-state">No ${status} comments.</p>`; return; }
+      let html = '';
+      snap.forEach(d => {
+        const c = d.data();
+        html += `<div class="review-row">
+          <div class="review-row-top">
+            <div>
+              <span class="review-row-name">${escapeHtml(c.name || '')}</span>
+              <span class="review-row-role">${escapeHtml(c.role || '')}</span>
+              ${c.instagram ? `<span style="font-size:0.75rem;color:#7B2FF7;margin-left:8px">@${escapeHtml(c.instagram)}</span>` : ''}
+            </div>
+          </div>
+          <p class="review-row-text">${escapeHtml(c.text || '')}</p>
+          <div class="review-row-actions">
+            ${status === 'pending' ? `<button class="btn-sm btn-approve" onclick="approveComment('${d.id}')">✓ Approve</button>` : ''}
+            <button class="btn-sm btn-delete" onclick="deleteComment('${d.id}')">🗑 Delete</button>
+          </div>
+        </div>`;
+      });
+      list.innerHTML = html;
+    } catch(err) { list.innerHTML = '<p class="empty-state">Failed to load.</p>'; }
+  }
+
+  window.approveComment = async function(id) {
+    await updateDoc(doc(db, 'comments', id), { status: 'approved' });
+    loadAdminComments(currentCommentTab);
+  };
+
+  window.deleteComment = async function(id) {
+    if (!confirm('Delete this comment?')) return;
+    await deleteDoc(doc(db, 'comments', id));
+    loadAdminComments(currentCommentTab);
   };
 
   // ── APPLICATIONS ──
