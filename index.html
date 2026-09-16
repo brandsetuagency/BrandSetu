@@ -1081,6 +1081,8 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+// ── LOAD APPROVED REVIEWS (with See More) ──
+let allReviews = [];
 async function loadApprovedReviews() {
   const grid = document.getElementById('reviewsGrid');
   const empty = document.getElementById('reviewsEmpty');
@@ -1091,34 +1093,42 @@ async function loadApprovedReviews() {
       window.__bsWhere('status', '==', 'approved')
     );
     const snap = await window.__bsGetDocs(q);
-    if (snap.empty) {
-      empty.style.display = 'block';
-      return;
-    }
-    let html = '';
-    snap.forEach(doc => {
-      const r = doc.data();
-      const initial = (r.name || '?').trim().charAt(0).toUpperCase();
-      const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
-      html += `
-        <div class="review-card">
-          <div class="review-stars">${stars}</div>
-          <p class="review-text">${escapeHtml(r.text || '')}</p>
-          <div class="review-author">
-            <div class="review-avatar">${escapeHtml(initial)}</div>
-            <div>
-              <span class="review-name">${escapeHtml(r.name || '')}</span>
-              <span class="review-role">${escapeHtml(r.role || '')}</span>
-            </div>
-          </div>
-        </div>`;
-    });
-    grid.innerHTML = html;
+    if (snap.empty) { empty.style.display = 'block'; return; }
+    allReviews = [];
+    snap.forEach(doc => allReviews.push(doc.data()));
+    renderReviews(3);
   } catch (err) {
     console.error('Failed to load reviews:', err);
-    empty.textContent = currentLang === 'hi' ? 'रिव्यू लोड नहीं हो सके।' : 'Could not load reviews.';
     empty.style.display = 'block';
   }
+}
+
+function renderReviews(showCount) {
+  const grid = document.getElementById('reviewsGrid');
+  const visible = allReviews.slice(0, showCount);
+  let html = '';
+  visible.forEach(r => {
+    const initial = (r.name || '?').trim().charAt(0).toUpperCase();
+    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
+    html += `
+      <div class="review-card">
+        <div class="review-stars">${stars}</div>
+        <p class="review-text">${escapeHtml(r.text || '')}</p>
+        <div class="review-author">
+          <div class="review-avatar">${escapeHtml(initial)}</div>
+          <div>
+            <span class="review-name">${escapeHtml(r.name || '')}</span>
+            <span class="review-role">${escapeHtml(r.role || '')}</span>
+          </div>
+        </div>
+      </div>`;
+  });
+  if (allReviews.length > showCount) {
+    html += `<div style="grid-column:1/-1;text-align:center;margin-top:8px">
+      <button class="btn btn-outline" onclick="renderReviews(${showCount + 3})">See More Reviews ↓</button>
+    </div>`;
+  }
+  grid.innerHTML = html;
 }
 
 if (window.__bsDb) {
@@ -1127,7 +1137,8 @@ if (window.__bsDb) {
   window.addEventListener('bsFirebaseReady', loadApprovedReviews, { once: true });
 }
 
-// ── LOAD CREATORS WITH US ──
+// ── LOAD CREATORS WITH US (with See More) ──
+let allCreators = [];
 async function loadCreators() {
   const grid = document.getElementById('creatorsGrid');
   const empty = document.getElementById('creatorsEmpty');
@@ -1138,32 +1149,40 @@ async function loadCreators() {
       window.__bsWhere('status', '==', 'approved')
     );
     const snap = await window.__bsGetDocs(q);
-    if (snap.empty) {
-      empty.style.display = 'block';
-      return;
-    }
-    let html = '';
-    snap.forEach(doc => {
-      const c = doc.data();
-      const initial = (c.name || '?').trim().charAt(0).toUpperCase();
-      const picHtml = c.photoUrl
-        ? `<img class="creator-pic" src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name || '')}" />`
-        : `<div class="creator-pic-fallback">${escapeHtml(initial)}</div>`;
-      const handle = (c.instagram || '').replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/$/, '');
-      const instaUrl = handle ? `https://instagram.com/${handle}` : '#';
-      html += `
-        <div class="creator-card">
-          ${picHtml}
-          <div class="creator-name">${escapeHtml(c.name || '')}</div>
-          <a class="creator-insta" href="${instaUrl}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>
-        </div>`;
-    });
-    grid.innerHTML = html;
+    if (snap.empty) { empty.style.display = 'block'; return; }
+    allCreators = [];
+    snap.forEach(doc => allCreators.push(doc.data()));
+    renderCreators(4);
   } catch (err) {
     console.error('Failed to load creators:', err);
-    empty.textContent = currentLang === 'hi' ? 'क्रिएटर्स लोड नहीं हो सके।' : 'Could not load creators.';
     empty.style.display = 'block';
   }
+}
+
+function renderCreators(showCount) {
+  const grid = document.getElementById('creatorsGrid');
+  const visible = allCreators.slice(0, showCount);
+  let html = '';
+  visible.forEach(c => {
+    const initial = (c.name || '?').trim().charAt(0).toUpperCase();
+    const picHtml = c.photoUrl
+      ? `<img class="creator-pic" src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name || '')}" />`
+      : `<div class="creator-pic-fallback">${escapeHtml(initial)}</div>`;
+    const handle = (c.instagram || '').replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/$/, '');
+    const instaUrl = handle ? `https://instagram.com/${handle}` : '#';
+    html += `
+      <div class="creator-card">
+        ${picHtml}
+        <div class="creator-name">${escapeHtml(c.name || '')}</div>
+        <a class="creator-insta" href="${instaUrl}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>
+      </div>`;
+  });
+  if (allCreators.length > showCount) {
+    html += `<div style="grid-column:1/-1;text-align:center;margin-top:8px">
+      <button class="btn btn-outline" onclick="renderCreators(${showCount + 4})">See More Creators ↓</button>
+    </div>`;
+  }
+  grid.innerHTML = html;
 }
 
 if (window.__bsDb) {
@@ -1172,7 +1191,8 @@ if (window.__bsDb) {
   window.addEventListener('bsFirebaseReady', loadCreators, { once: true });
 }
 
-// ── LOAD REELS ──
+// ── LOAD REELS (with See More) ──
+let allReels = [];
 async function loadReels() {
   const grid = document.getElementById('reelsGrid');
   const empty = document.getElementById('reelsEmpty');
@@ -1180,21 +1200,32 @@ async function loadReels() {
   try {
     const snap = await window.__bsGetDocs(window.__bsCollection(window.__bsDb, 'reels'));
     if (snap.empty) { empty.style.display = 'block'; return; }
-    const docs = [];
-    snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
-    docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    let html = '';
-    docs.forEach(r => {
-      const thumb = r.thumbnail || 'https://placehold.co/300x533/1a0a2e/ffffff?text=▶';
-      html += `
-        <a class="reel-card" href="${escapeHtml(r.link || '#')}" target="_blank" rel="noopener">
-          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(r.brand || 'Collab Reel')}" loading="lazy" />
-          <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#7B2FF7"><polygon points="5,3 19,12 5,21"/></svg></div>
-          <div class="reel-brand">${escapeHtml(r.brand || '')}</div>
-        </a>`;
-    });
-    grid.innerHTML = html;
+    allReels = [];
+    snap.forEach(d => allReels.push({ id: d.id, ...d.data() }));
+    allReels.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    renderReels(3);
   } catch(err) { console.error(err); empty.style.display = 'block'; }
+}
+
+function renderReels(showCount) {
+  const grid = document.getElementById('reelsGrid');
+  const visible = allReels.slice(0, showCount);
+  let html = '';
+  visible.forEach(r => {
+    const thumb = r.thumbnail || 'https://placehold.co/300x533/1a0a2e/ffffff?text=▶';
+    html += `
+      <a class="reel-card" href="${escapeHtml(r.link || '#')}" target="_blank" rel="noopener">
+        <img src="${escapeHtml(thumb)}" alt="${escapeHtml(r.brand || 'Collab Reel')}" loading="lazy" />
+        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#7B2FF7"><polygon points="5,3 19,12 5,21"/></svg></div>
+        <div class="reel-brand">${escapeHtml(r.brand || '')}</div>
+      </a>`;
+  });
+  if (allReels.length > showCount) {
+    html += `<div style="grid-column:1/-1;text-align:center;margin-top:8px">
+      <button class="btn btn-outline" onclick="renderReels(${showCount + 3})">See More Reels ↓</button>
+    </div>`;
+  }
+  grid.innerHTML = html;
 }
 
 if (window.__bsDb) { loadReels(); }
