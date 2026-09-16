@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BrandSetu — We Show You Everything</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#7B2FF7;
+  --orange:#FF7A18;
+  --dark:#1A0A2E;
+  --ink:#0D0618;
+  --body:#3D3347;
+  --muted:#6B5F78;
+  --bg:#F9F5F2;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--body);line-height:1.6}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 5vw;display:flex;justify-content:space-between;align-items:center;background:rgba(10,4,22,0.92);backdrop-filter:blur(10px)}
+.nav-logo{font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--orange)}
+.nav-back{font-size:0.84rem;font-weight:700;color:rgba(255,255,255,0.7);text-decoration:none;border:1px solid rgba(255,255,255,0.2);padding:7px 16px;border-radius:20px;transition:all 0.2s}
+.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.5)}
+
+/* ── HERO ── */
+.hero{background:var(--ink);padding:140px 5vw 100px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(123,47,247,0.35) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-block;font-size:0.78rem;font-weight:800;letter-spacing:0.12em;color:var(--orange);text-transform:uppercase;margin-bottom:24px;border:1px solid rgba(255,122,24,0.3);padding:6px 18px;border-radius:20px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;color:#fff;line-height:1.08;letter-spacing:-0.03em;margin-bottom:28px;max-width:800px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.1rem;color:rgba(255,255,255,0.65);max-width:560px;margin:0 auto 48px;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.hero-stat-num{font-size:2.4rem;font-weight:900;color:#fff;display:block;line-height:1}
+.hero-stat-label{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:4px}
+
+/* ── SECTIONS ── */
+.section{padding:80px 5vw}
+.section-inner{max-width:960px;margin:0 auto}
+.section-dark{background:var(--dark);color:#fff}
+.section-light{background:#fff}
+.section-bg{background:var(--bg)}
+.section-orange{background:var(--orange)}
+
+.section-tag{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;display:block}
+.section-dark .section-tag{color:rgba(255,255,255,0.45)}
+.section-light .section-tag,.section-bg .section-tag{color:var(--purple)}
+.section-orange .section-tag{color:rgba(255,255,255,0.7)}
+
+h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:16px}
+.section-dark h2{color:#fff}
+.section-light h2,.section-bg h2{color:var(--dark)}
+.section-orange h2{color:#fff}
+.section-lead{font-size:1.05rem;line-height:1.7;max-width:640px;margin-bottom:48px}
+.section-dark .section-lead{color:rgba(255,255,255,0.65)}
+.section-light .section-lead,.section-bg .section-lead{color:var(--muted)}
+.section-orange .section-lead{color:rgba(255,255,255,0.85)}
+
+/* ── FEE CARDS ── */
+.fee-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fee-card{border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.fee-card-barter{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)}
+.fee-card-paid{background:var(--purple);border:1px solid transparent}
+.fee-type{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px}
+.fee-card-paid .fee-type{color:rgba(255,255,255,0.7)}
+.fee-name{font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:20px}
+.fee-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.fee-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:7px}
+.fee-card-paid .fee-dot{background:#FFD66B}
+.fee-text{font-size:0.88rem;color:rgba(255,255,255,0.75);line-height:1.5}
+.fee-text strong{color:#fff}
+
+/* ── MATH BOX ── */
+.math-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;margin-top:24px}
+.math-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.math-row:last-child{border-bottom:none}
+.math-label{font-size:0.88rem;color:rgba(255,255,255,0.6)}
+.math-value{font-size:1rem;font-weight:800;color:#fff}
+.math-value.green{color:#4ade80}
+.math-value.orange{color:var(--orange)}
+.math-value.muted{color:rgba(255,255,255,0.4);font-size:0.82rem;font-weight:600}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;margin-top:40px}
+.timeline::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:2px;background:rgba(123,47,247,0.2)}
+.timeline-item{display:flex;gap:20px;margin-bottom:32px;position:relative}
+.timeline-circle{width:48px;height:48px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0;position:relative;z-index:1}
+.timeline-content{padding-top:10px}
+.timeline-day{font-size:0.72rem;font-weight:800;color:var(--purple);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
+.timeline-title{font-size:0.96rem;font-weight:800;color:var(--dark);margin-bottom:4px}
+.timeline-desc{font-size:0.84rem;color:var(--muted);line-height:1.5}
+
+/* ── RULES GRID ── */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px}
+.rule-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px}
+.rule-icon{font-size:1.6rem;margin-bottom:12px;display:block}
+.rule-title{font-size:0.9rem;font-weight:800;color:#fff;margin-bottom:8px}
+.rule-desc{font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6}
+
+/* ── DEFAULT POLICY ── */
+.policy-box{background:var(--bg);border-radius:16px;padding:28px;margin-bottom:16px;border-left:4px solid var(--purple)}
+.policy-box-red{border-left-color:var(--orange)}
+.policy-title{font-size:0.82rem;font-weight:800;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px}
+.policy-box-red .policy-title{color:var(--orange)}
+.policy-text{font-size:0.9rem;color:var(--body);line-height:1.6}
+.policy-text strong{color:var(--dark)}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid rgba(0,0,0,0.07);padding:20px 0}
+.faq-q{font-size:0.96rem;font-weight:800;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-q::after{content:'+';font-size:1.4rem;color:var(--purple);flex-shrink:0;transition:transform 0.2s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{font-size:0.88rem;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.2s}
+.faq-item.open .faq-a{max-height:300px;padding-top:12px}
+
+/* ── DONT LIST ── */
+.dont-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.dont-item{display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:12px;padding:16px 18px}
+.dont-icon{font-size:1.1rem;flex-shrink:0}
+.dont-text{font-size:0.86rem;color:var(--body);line-height:1.5}
+.dont-text strong{color:var(--dark);display:block;margin-bottom:2px}
+
+/* ── REAL CAMPAIGNS ── */
+.campaigns-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.campaign-card{background:var(--dark);border-radius:20px;padding:28px;color:#fff}
+.campaign-brand{font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:6px}
+.campaign-type{font-size:0.72rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;display:block}
+.campaign-stat{margin-bottom:12px}
+.campaign-stat-num{font-size:1.8rem;font-weight:900;color:#fff;line-height:1}
+.campaign-stat-label{font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:2px}
+
+/* ── PROMISE ── */
+.promise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.promise-item{text-align:center;padding:28px 20px;background:rgba(255,255,255,0.1);border-radius:16px}
+.promise-icon{font-size:2rem;margin-bottom:14px;display:block}
+.promise-title{font-size:0.92rem;font-weight:800;color:#fff;margin-bottom:6px}
+.promise-desc{font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.5}
+
+/* ── CTA ── */
+.cta-section{background:var(--ink);padding:80px 5vw;text-align:center}
+.cta-section h2{color:#fff;font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:16px}
+.cta-section p{color:rgba(255,255,255,0.6);margin-bottom:36px;font-size:1rem}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:14px 28px;background:var(--purple);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:0.92rem;text-decoration:none;cursor:pointer}
+.btn-secondary{padding:14px 28px;background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.25);border-radius:10px;font-weight:700;font-size:0.92rem;text-decoration:none}
+.btn-secondary:hover{border-color:#fff}
+
+@media(max-width:600px){
+  .fee-grid,.rules-grid,.dont-grid,.campaigns-grid,.promise-grid{grid-template-columns:1fr}
+  .hero-stats{gap:28px}
+  .timeline::before{left:20px}
+  .timeline-circle{width:40px;height:40px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Brand<span>Setu</span></a>
+  <a href="index.html" class="nav-back">← Back to Website</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">India's First Transparent Creator Agency</div>
+  <h1>We show you<br><em>everything.</em></h1>
+  <p class="hero-sub">Our fees. Our process. Our failures. Our policy. No hidden charges, no vague promises — just real numbers and real accountability.</p>
+  <div class="hero-stats">
+    <div>
+      <span class="hero-stat-num">100+</span>
+      <span class="hero-stat-label">Verified Creators</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">60+</span>
+      <span class="hero-stat-label">Collabs Completed</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">10+</span>
+      <span class="hero-stat-label">Brand Partners</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">0</span>
+      <span class="hero-stat-label">Hidden Fees</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEE STRUCTURE -->
+<section class="section section-dark" id="fees">
+  <div class="section-inner">
+    <span class="section-tag">Our Fee Structure</span>
+    <h2>Exactly what we charge.</h2>
+    <p class="section-lead">Two collaboration types. Two clear fee structures. No surprises — ever.</p>
+
+    <div class="fee-grid">
+      <!-- BARTER -->
+      <div class="fee-card fee-card-barter">
+        <div class="fee-type">Collab Type 01</div>
+        <div class="fee-name">🤝 Barter Collab</div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text"><strong>₹500 per creator</strong> — BrandSetu Management Fee (charged to brand)</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Total fee depends on <strong>number of creators × ₹500</strong></div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Brand sends <strong>2–4 product options</strong> (PR package) to each creator</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Each creator delivers <strong>1 Reel + 1 Story</strong></div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text"><strong>No views/reach guarantee</strong> — authentic content only</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Creator keeps the product — always</div></div>
+      </div>
+
+      <!-- PAID -->
+      <div class="fee-card fee-card-paid">
+        <div class="fee-type">Collab Type 02</div>
+        <div class="fee-name">💰 Paid Collab</div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text"><strong>10% commission from brand</strong> added on top of creator's fee</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text"><strong>10% commission from creator</strong> deducted from their payout</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Creator's rate card determines base price — we don't interfere</div></div>
+        <div class="fee-item"><div class="fee-dot"></div><div class="fee-text">Deliverables decided between brand + creator — BrandSetu facilitates</div></div>
+
+        <div class="math-box">
+          <div style="font-size:0.72rem;font-weight:800;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Real Example — ₹10,000 Deal</div>
+          <div class="math-row">
+            <span class="math-label">Creator's rate</span>
+            <span class="math-value">₹10,000</span>
+          </div>
+          <div class="math-row">
+            <span class="math-label">Brand pays</span>
+            <span class="math-value orange">₹11,000</span>
+          </div>
+          <div class="math-row">
+            <span class="math-label">Creator receives</span>
+            <span class="math-value green">₹9,000</span>
+          </div>
+          <div class="math-row">
+            <span class="math-label">BrandSetu earns</span>
+            <span class="math-value muted">₹2,000 (10%+10%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section section-light" id="process">
+  <div class="section-inner">
+    <span class="section-tag">Process Timeline</span>
+    <h2>Day by day. No guessing.</h2>
+    <p class="section-lead">Every collaboration follows the same clear timeline. Both brands and creators know exactly what happens when.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-circle">D1</div>
+        <div class="timeline-content">
+          <div class="timeline-day">Day 1</div>
+          <div class="timeline-title">Deal Locked</div>
+          <div class="timeline-desc">Brand confirms creators, fee paid, agreement sent. No work begins without written confirmation.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-circle">D2</div>
+        <div class="timeline-content">
+          <div class="timeline-day">Day 2–3</div>
+          <div class="timeline-title">Products Dispatched (Barter) / Brief Shared (Paid)</div>
+          <div class="timeline-desc">Brand ships PR package with 2–4 product options. Paid collab: creator receives detailed brief same day.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-circle">D7</div>
+        <div class="timeline-content">
+          <div class="timeline-day">Within 7 Days of Product Receipt</div>
+          <div class="timeline-title">Creator Shoots Content</div>
+          <div class="timeline-desc">Creator shoots within 7 days of receiving product. No excuses, no delays — this is a professional commitment.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-circle">D10</div>
+        <div class="timeline-content">
+          <div class="timeline-day">By Day 10</div>
+          <div class="timeline-title">Brand Receives Video</div>
+          <div class="timeline-desc">Brand receives final content within 10 days of product delivery. Upload timeline shared minimum 1 week in advance.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-circle">D10</div>
+        <div class="timeline-content">
+          <div class="timeline-day">Day 10 — Go Live</div>
+          <div class="timeline-title">Content Goes Live</div>
+          <div class="timeline-desc">Reel + Story published. BrandSetu tracks and confirms. Campaign officially complete.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-circle">D30</div>
+        <div class="timeline-content">
+          <div class="timeline-day">Day 15–30</div>
+          <div class="timeline-title">Payments Processed</div>
+          <div class="timeline-desc">Paid collabs: creator payment processed within 15–30 days of video going live. Brands invoiced same cycle. No ghosting, no delays.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE DONT DO -->
+<section class="section section-dark" id="honesty">
+  <div class="section-inner">
+    <span class="section-tag">Radical Honesty</span>
+    <h2>What we will never promise.</h2>
+    <p class="section-lead">Every agency promises the world. We'd rather tell you what we won't do — and why that makes us better.</p>
+
+    <div class="dont-grid">
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No views guarantee</strong>Authentic content doesn't come with a views counter. Anyone promising that is lying.</div>
+      </div>
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No fake followers</strong>Every creator in our network is manually verified. Inflated numbers disqualify immediately.</div>
+      </div>
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No blind matching</strong>We match brands with creators by niche, audience, and fit — not just availability.</div>
+      </div>
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No hidden fees</strong>₹500/creator for barter. 10%+10% for paid. That's it. Nothing else will appear on your invoice.</div>
+      </div>
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No creative interference</strong>Brands don't script creators. Authentic storytelling converts better than ads — we protect that.</div>
+      </div>
+      <div class="dont-item">
+        <span class="dont-icon">🚫</span>
+        <div class="dont-text"><strong>No product returns</strong>Creator keeps the PR package — always. Factor this into your campaign budget from day one.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEFAULT POLICY -->
+<section class="section section-bg" id="policy">
+  <div class="section-inner">
+    <span class="section-tag">Default Policy</span>
+    <h2>What happens when things go wrong.</h2>
+    <p class="section-lead">We've had creators not deliver. We're putting our policy in writing so you know exactly where you stand — before you sign.</p>
+
+    <div class="policy-box">
+      <div class="policy-title">If a Creator Doesn't Deliver</div>
+      <div class="policy-text">
+        BrandSetu will provide a <strong>replacement creator of the same niche and tier within 7 days</strong>.<br><br>
+        If a suitable replacement cannot be sourced, the <strong>management fee for that creator (₹500) will be refunded</strong>.<br><br>
+        The product sent to the defaulting creator <strong>cannot be recovered or refunded</strong> — it stays with the creator. This is why we carefully vet every creator before onboarding.
+      </div>
+    </div>
+
+    <div class="policy-box">
+      <div class="policy-title">If the Brand Delays Product Dispatch</div>
+      <div class="policy-text">
+        Creator's <strong>7-day shoot window starts from the day the product is received</strong> — not from campaign start.<br><br>
+        If dispatch is delayed by more than 7 days without notice, BrandSetu reserves the right to <strong>reschedule or reassign the campaign slot</strong>.
+      </div>
+    </div>
+
+    <div class="policy-box policy-box-red">
+      <div class="policy-title">No Refund Cases</div>
+      <div class="policy-text">
+        <strong>Content was created but brand dislikes it</strong> — creative differences are not grounds for refund. Brief must be clear upfront.<br><br>
+        <strong>Views/reach didn't meet expectations</strong> — we never promised views. Organic reach is unpredictable by design.<br><br>
+        <strong>Campaign fully executed</strong> — once video is live and verified, deal is complete.
+      </div>
+    </div>
+
+    <div style="background:var(--dark);border-radius:14px;padding:20px 24px;margin-top:8px;display:flex;align-items:center;gap:16px">
+      <span style="font-size:1.6rem">⚠️</span>
+      <p style="font-size:0.86rem;color:rgba(255,255,255,0.7);line-height:1.5">In our first two campaigns — <strong style="color:#fff">Qalb (15 creators)</strong> and <strong style="color:#fff">OneGummy (40 creators)</strong> — 5 creators did not deliver. We replaced where possible and own that fully. That's why this policy now exists in writing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REAL CAMPAIGNS -->
+<section class="section section-light" id="campaigns">
+  <div class="section-inner">
+    <span class="section-tag">Real Numbers</span>
+    <h2>Our actual campaigns.</h2>
+    <p class="section-lead">Not case studies with inflated numbers. Real campaigns, real fees, real results.</p>
+
+    <div class="campaigns-grid">
+      <div class="campaign-card">
+        <div class="campaign-brand">Qalb</div>
+        <span class="campaign-type">Barter Collab</span>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">15</div>
+          <div class="campaign-stat-label">Creators</div>
+        </div>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">₹5,000</div>
+          <div class="campaign-stat-label">Total BrandSetu Fee</div>
+        </div>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">₹333</div>
+          <div class="campaign-stat-label">Per Creator (avg)</div>
+        </div>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:16px;line-height:1.5">12/15 creators delivered on time. 2 replaced, 1 management fee refunded.</p>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-brand">OneGummy</div>
+        <span class="campaign-type">Barter Collab</span>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">40</div>
+          <div class="campaign-stat-label">Creators</div>
+        </div>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">₹12,000</div>
+          <div class="campaign-stat-label">Total BrandSetu Fee</div>
+        </div>
+        <div class="campaign-stat">
+          <div class="campaign-stat-num">₹300</div>
+          <div class="campaign-stat-label">Per Creator (avg)</div>
+        </div>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:16px;line-height:1.5">37/40 creators delivered. 3 replaced with fresh creators from network.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-bg" id="faq">
+  <div class="section-inner">
+    <span class="section-tag">FAQ</span>
+    <h2>Questions we get asked.</h2>
+    <p class="section-lead">Real questions, real answers — no marketing fluff.</p>
+
+    <div style="margin-top:32px">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I approve the creator before they're confirmed?</div>
+        <div class="faq-a">Yes. We share creator profiles — niche, follower count, sample content — before confirming. You can approve or request alternatives. Final list is locked only after your sign-off.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if the product gets lost in transit?</div>
+        <div class="faq-a">Transit responsibility lies with the brand. We recommend tracking-enabled shipping. If a product is lost, brand must reship — the 7-day creator window resets from new delivery. BrandSetu will follow up with creator.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can I request specific content formats?</div>
+        <div class="faq-a">For paid collabs, yes — detailed briefs are shared with creators. For barter, you can provide reference content and key talking points, but we don't enforce scripts. Authentic content performs better.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if I'm unhappy with the content quality?</div>
+        <div class="faq-a">Content quality feedback must be raised within 48 hours of receiving the draft (for paid collabs with review rounds). For barter, creators own their creative — however, clear brief = better results. Quality concerns before campaigns start, not after.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you work with nano creators (under 10K)?</div>
+        <div class="faq-a">Yes — our network includes micro and nano creators in specific niches who deliver strong engagement rates. Follower count alone doesn't determine fit. We match on niche relevance and content quality.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How do I pay BrandSetu?</div>
+        <div class="faq-a">Via UPI, bank transfer, or razorpay link — whatever is convenient. Invoice shared before campaign begins. No payment, no campaign start. Simple.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section class="section section-dark" id="promise">
+  <div class="section-inner" style="text-align:center">
+    <span class="section-tag">Our Promise</span>
+    <h2>We put this in writing.</h2>
+    <p class="section-lead" style="margin-left:auto;margin-right:auto">Three things we commit to on every single campaign — no exceptions.</p>
+
+    <div class="promise-grid">
+      <div class="promise-item">
+        <span class="promise-icon">📋</span>
+        <div class="promise-title">Written Agreement</div>
+        <div class="promise-desc">Every campaign starts with a written brief and fee confirmation. Nothing is assumed, nothing is verbal-only.</div>
+      </div>
+      <div class="promise-item">
+        <span class="promise-icon">⏰</span>
+        <div class="promise-title">Timeline Commitment</div>
+        <div class="promise-desc">Upload timeline shared minimum 1 week before go-live. Brands know the date, creators know the date.</div>
+      </div>
+      <div class="promise-item">
+        <span class="promise-icon">💸</span>
+        <div class="promise-title">On-Time Payment</div>
+        <div class="promise-desc">Creator payments within 15–30 days of video going live. We follow up. We chase. We pay.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to work with an agency<br>that hides nothing?</h2>
+  <p>Join 10+ brands and 100+ creators who chose transparency over tall promises.</p>
+  <div class="cta-buttons">
+    <a href="index.html#brands" class="btn-primary">I'm a Brand →</a>
+    <a href="creator-form.html" class="btn-secondary">I'm a Creator →</a>
+  </div>
+</section>
+
+<script>
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
