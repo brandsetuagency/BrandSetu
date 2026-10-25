@@ -346,6 +346,21 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 .sbtns a.sa-apply{background:var(--orange)}
 .sbtns a.sa-dis{background:rgba(255,255,255,.1);color:rgba(255,255,255,.45);pointer-events:none}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.orb,.marquee-track,.story-ring::before{animation:none}}
+
+/* ── REEL THEATER ── */
+.theater{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;margin-top:48px;max-width:760px;margin-left:auto;margin-right:auto}
+.phone{position:relative;width:300px;height:620px;border-radius:44px;background:#0d0618;padding:12px;box-shadow:0 30px 80px rgba(123,47,247,.35),0 0 0 2px #2a1550;animation:phoneFloat 6s ease-in-out infinite}
+@keyframes phoneFloat{50%{transform:translateY(-10px)}}
+.phone iframe{width:100%;height:100%;border:0;border-radius:34px;background:#fff}
+.phone .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:90px;height:22px;background:#0d0618;border-radius:0 0 14px 14px;z-index:2}
+.reel-list{display:flex;flex-direction:column;gap:10px;max-height:560px;overflow-y:auto;padding-right:6px}
+.reel-chip{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;border:1.5px solid rgba(123,47,247,.15);background:#fff;cursor:pointer;font-family:inherit;font-weight:700;font-size:.88rem;color:var(--dark);text-align:left;transition:all .2s}
+.reel-chip:hover{border-color:var(--purple)}
+.reel-chip.on{background:var(--purple);color:#fff;border-color:var(--purple);transform:translateX(6px)}
+.reel-chip b{width:28px;height:28px;border-radius:50%;background:rgba(123,47,247,.12);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0}
+.reel-chip.on b{background:rgba(255,255,255,.25);color:#fff}
+@media(max-width:700px){.theater{grid-template-columns:1fr;justify-items:center}.reel-list{flex-direction:row;max-height:none;overflow-x:auto;max-width:100%;padding-bottom:8px}.reel-chip{flex:0 0 auto}.phone{width:280px;height:580px}}
+@media(prefers-reduced-motion:reduce){.phone{animation:none}}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -439,15 +454,15 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <span class="stat-num" id="stat1">100+</span>
+      <span class="stat-num" id="stat1">250+</span>
       <span class="stat-label" data-en="Creators in Network" data-hi="नेटवर्क में क्रिएटर्स">Creators in Network</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" id="stat2">10+</span>
+      <span class="stat-num" id="stat2">20+</span>
       <span class="stat-label" data-en="Brand Partners" data-hi="ब्रांड पार्टनर">Brand Partners</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" id="stat3">60+</span>
+      <span class="stat-num" id="stat3">100+</span>
       <span class="stat-label" data-en="Collabs Completed" data-hi="पूरे हुए सहयोग">Collabs Completed</span>
     </div>
   </div>
@@ -463,9 +478,32 @@ footer{background:#0F0720;padding:40px 5vw 28px}
     <h2>Brands <em>Building With Us</em></h2>
     <p style="color:var(--muted);max-width:560px">Tap a brand to see if its collab is open, what it is looking for, and apply in one tap.</p>
     <div class="story-row" id="storyRow"></div>
+    <div style="text-align:center;margin-top:20px"><button class="btn btn-purple" onclick="openQuick('')">⚡ Quick Apply as Creator</button></div>
     <div class="reels-empty" id="storiesEmpty" style="display:none">Brand partners are being added. Stay tuned! ✨</div>
   </div>
 </section>
+<div class="modal-overlay" id="quickModal"><div class="modal">
+  <button class="modal-close" onclick="closeModal('quickModal')" aria-label="Close">✕</button>
+  <div id="qForm">
+    <div class="modal-badge modal-badge-brand">⚡ Quick Apply</div>
+    <h3>Apply in 30 seconds</h3>
+    <p class="modal-sub" id="qBrandNote"></p>
+    <form id="qFormEl" onsubmit="submitQuick(event)">
+      <input type="hidden" id="qBrand" />
+      <div class="form-group"><label>Your Name *</label><input type="text" id="qName" required /></div>
+      <div class="form-group"><label>Instagram Username *</label><input type="text" id="qInsta" placeholder="yourusername" required /></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="tel" id="qPhone" required /></div>
+      <div class="form-group"><label>Followers *</label><input type="text" id="qFol" placeholder="e.g. 25K" required /></div>
+      <div class="form-group"><label>Main Niche *</label><select id="qNiche" required><option value="">Select...</option><option>Beauty</option><option>Fashion</option><option>Lifestyle</option><option>Skincare</option><option>Haircare</option><option>Fitness</option><option>Food</option><option>Tech</option><option>Travel</option><option>Other</option></select></div>
+      <div class="form-footer"><button type="submit" class="btn btn-purple">Submit Application →</button></div>
+    </form>
+  </div>
+  <div id="qDone" style="display:none;text-align:center;padding:20px 0">
+    <h4>Application received! 🎉</h4>
+    <p style="margin:10px 0 18px">Our team will reach out when a collab matches your profile.</p>
+    <a id="qWa" class="btn btn-purple" target="_blank" rel="noopener">Also message us on WhatsApp →</a>
+  </div>
+</div></div>
 <div class="smodal" id="storyModal" onclick="if(event.target===this)closeStory()"><div class="scard" id="storyCard"></div></div>
 
 <!-- HOW IT WORKS -->
@@ -1025,7 +1063,7 @@ async function handleSubmit(e, modalId) {
 }
 
 // ── STATS COUNTER ──
-const statTargets = { stat1: 100, stat2: 10, stat3: 60 };
+const statTargets = { stat1: 250, stat2: 20, stat3: 100 };
 let statsDone = false;
 function animateCount(id, target) {
   let current = 0;
@@ -1248,25 +1286,22 @@ async function loadReels() {
   } catch(err) { console.error(err); empty.style.display = 'block'; }
 }
 
-function renderReels(showCount) {
+function reelEmbed(link) {
+  const m = (link || '').match(/instagram\.com\/(?:[^\/]+\/)?(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/);
+  return m ? `https://www.instagram.com/${m[1] === 'reels' ? 'reel' : m[1]}/${m[2]}/embed/` : null;
+}
+window.playReel = function(i) {
+  const r = allReels[i], src = reelEmbed(r.link);
+  if (!src) { window.open(r.link, '_blank'); return; }
+  document.getElementById('reelFrame').src = src;
+  document.querySelectorAll('.reel-chip').forEach((el, k) => el.classList.toggle('on', k === i));
+};
+function renderReels() {
   const grid = document.getElementById('reelsGrid');
-  const visible = allReels.slice(0, showCount);
-  let html = '';
-  visible.forEach(r => {
-    const thumb = r.thumbnail || 'https://placehold.co/300x533/1a0a2e/ffffff?text=▶';
-    html += `
-      <a class="reel-card" href="${escapeHtml(r.link || '#')}" target="_blank" rel="noopener">
-        <img src="${escapeHtml(thumb)}" alt="${escapeHtml(r.brand || 'Collab Reel')}" loading="lazy" />
-        <div class="reel-play"><svg width="18" height="18" viewBox="0 0 24 24" fill="#7B2FF7"><polygon points="5,3 19,12 5,21"/></svg></div>
-        <div class="reel-brand">${escapeHtml(r.brand || '')}</div>
-      </a>`;
-  });
-  if (allReels.length > showCount) {
-    html += `<div style="grid-column:1/-1;text-align:center;margin-top:8px">
-      <button class="btn btn-outline" onclick="renderReels(${showCount + 3})">See More Reels ↓</button>
-    </div>`;
-  }
-  grid.innerHTML = html;
+  grid.className = 'theater';
+  const chips = allReels.map((r, i) => `<button class="reel-chip" onclick="playReel(${i})"><b>${i + 1}</b>${escapeHtml(r.brand || 'Collab Reel')}</button>`).join('');
+  grid.innerHTML = `<div class="phone"><div class="notch"></div><iframe id="reelFrame" title="Collab reel" loading="lazy" allowfullscreen></iframe></div><div class="reel-list">${chips}</div>`;
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { playReel(0); o.disconnect(); } }, { threshold: 0.2 }).observe(grid);
 }
 
 if (window.__bsDb) { loadReels(); }
@@ -1410,7 +1445,7 @@ window.openStory = function(i) {
     <p class="sabout">${escapeHtml(b.about || 'A BrandSetu partner brand.')}</p>
     ${b.lookingFor ? `<div class="slook"><b>Looking for:</b> ${escapeHtml(b.lookingFor)}</div>` : ''}
     <div class="sbtns">
-      ${open ? `<a class="sa-apply" href="${wa}" target="_blank" rel="noopener">Apply for this Collab →</a>` : `<a class="sa-dis">Collab Closed</a>`}
+      ${open ? `<a class="sa-apply" href="#" onclick="event.preventDefault();closeStory();openQuick(${i})">Apply for this Collab →</a>` : `<a class="sa-dis">Collab Closed</a>`}
       ${handle ? `<a href="https://instagram.com/${escapeHtml(handle)}" target="_blank" rel="noopener">Instagram @${escapeHtml(handle)}</a>` : ''}
       ${b.website ? `<a href="${escapeHtml(fixUrl(b.website))}" target="_blank" rel="noopener">Visit Website ↗</a>` : ''}
     </div>`;
@@ -1431,6 +1466,32 @@ if (window.__bsDb) { loadBrandStories(); } else { window.addEventListener('bsFir
 // ── SCROLL REVEAL (headings + story row) ──
 const rvObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rvObs.unobserve(e.target); } }), { threshold: 0.12 });
 document.querySelectorAll('section h2, .section-label, .story-row').forEach(el => { el.classList.add('rv'); rvObs.observe(el); });
+
+// ── QUICK APPLY ──
+window.openQuick = function(i) {
+  const brand = (i === '' || i == null) ? '' : (brandsList[i].name || '');
+  document.getElementById('qFormEl').reset();
+  document.getElementById('qBrand').value = brand;
+  document.getElementById('qBrandNote').textContent = brand ? 'Applying for: ' + brand : 'General creator application';
+  document.getElementById('qForm').style.display = 'block';
+  document.getElementById('qDone').style.display = 'none';
+  const b = document.querySelector('#qFormEl button[type=submit]'); b.disabled = false;
+  openModal('quickModal');
+};
+window.submitQuick = async function(e) {
+  e.preventDefault();
+  const g = id => document.getElementById(id).value.trim();
+  const handle = g('qInsta').replace(/^@/, '');
+  const d = { fullName: g('qName'), igUsername: '@' + handle, igLink: 'https://instagram.com/' + handle, whatsapp: g('qPhone'), followers: g('qFol'), niches: [g('qNiche')], appliedBrand: g('qBrand'), source: 'quick-apply', status: 'new', submittedAt: window.__bsServerTimestamp() };
+  const btn = e.target.querySelector('button[type=submit]'); btn.disabled = true;
+  try {
+    await window.__bsAddDoc(window.__bsCollection(window.__bsDb, 'creatorApplications'), d);
+    const t = 'Hi BrandSetu! I just applied' + (d.appliedBrand ? ' for the ' + d.appliedBrand + ' collab' : '') + '.\nName: ' + d.fullName + '\nInstagram: ' + d.igUsername + '\nFollowers: ' + d.followers;
+    document.getElementById('qWa').href = 'https://wa.me/919279700790?text=' + encodeURIComponent(t);
+    document.getElementById('qForm').style.display = 'none';
+    document.getElementById('qDone').style.display = 'block';
+  } catch (err) { console.error(err); alert('Something went wrong. Please try again.'); btn.disabled = false; }
+};
 </script>
 </body>
 </html>
