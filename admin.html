@@ -105,6 +105,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
       <div class="section-tab" data-section="reels" onclick="switchSection('reels')">🎬 Reels</div>
       <div class="section-tab" data-section="updates" onclick="switchSection('updates')">📢 Updates</div>
       <div class="section-tab" data-section="comments" onclick="switchSection('comments')">💬 Comments</div>
+      <div class="section-tab" data-section="brands" onclick="switchSection('brands')">🏷️ Brands</div>
     </div>
 
     <!-- REVIEWS SECTION -->
@@ -142,6 +143,22 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     <div id="applicationsSection" style="display:none">
       <p style="font-size:0.88rem;color:#6B5F78;margin-bottom:18px">Creator applications submitted via the onboarding form. Click <strong>"✅ Onboard"</strong> to add them directly to the Creators section on the website.</p>
       <div id="applicationsList"></div>
+    </div>
+
+    <!-- BRANDS SECTION -->
+    <div id="brandsSection" style="display:none">
+      <div class="add-creator-box">
+        <h3>🏷️ Add Brand Partner</h3>
+        <div class="form-row"><label>Brand Name *</label><input type="text" id="bName" placeholder="e.g. OneGummy" /></div>
+        <div class="form-row"><label>Logo Link (postimages.org direct link)</label><input type="text" id="bLogo" placeholder="https://i.postimg.cc/..." /></div>
+        <div class="form-row"><label>Instagram Username</label><input type="text" id="bInsta" placeholder="onegummy (without @)" /></div>
+        <div class="form-row"><label>Website Link</label><input type="text" id="bSite" placeholder="www.example.com" /></div>
+        <div class="form-row"><label>Collab Status</label><select id="bStatus" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-family:inherit;font-size:0.9rem"><option value="open">🟢 Open</option><option value="closed">🔴 Closed</option></select></div>
+        <div class="form-row"><label>Looking For</label><input type="text" id="bLook" placeholder="e.g. Skincare creators, 10K+ followers, barter" /></div>
+        <div class="form-row"><label>About / Collab Details</label><textarea id="bAbout" rows="3" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-family:inherit;font-size:0.9rem"></textarea></div>
+        <button id="addBrandBtn" onclick="addBrand()">Add Brand</button>
+      </div>
+      <div id="brandsList"></div>
     </div>
 
     <!-- REELS SECTION -->
@@ -292,7 +309,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
   // ── SECTION SWITCHER (Reviews vs Creators) ──
   window.switchSection = function(section) {
     document.querySelectorAll('.section-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-section') === section));
-    ['reviews','creators','applications','reels','updates','comments'].forEach(s => {
+    ['reviews','creators','applications','reels','updates','comments','brands'].forEach(s => {
       const el = document.getElementById(s + 'Section');
       if (el) el.style.display = section === s ? 'block' : 'none';
     });
@@ -301,9 +318,55 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     if (section === 'reels') loadReels();
     if (section === 'updates') loadAdminUpdates();
     if (section === 'comments') loadAdminComments('pending');
+    if (section === 'brands') loadAdminBrands();
   };
 
   // ── REELS ──
+  // ── BRANDS ──
+  window.addBrand = async function() {
+    const v = id => document.getElementById(id).value.trim();
+    const name = v('bName');
+    if (!name) { alert('Brand name is required.'); return; }
+    const btn = document.getElementById('addBrandBtn');
+    btn.disabled = true; btn.textContent = 'Adding...';
+    try {
+      await addDoc(collection(db, 'brands'), { name, logo: v('bLogo'), instagram: v('bInsta'), website: v('bSite'), status: document.getElementById('bStatus').value, lookingFor: v('bLook'), about: v('bAbout'), createdAt: serverTimestamp() });
+      ['bName','bLogo','bInsta','bSite','bLook','bAbout'].forEach(id => document.getElementById(id).value = '');
+      loadAdminBrands();
+    } catch (err) { console.error(err); alert('Failed to add brand.'); }
+    finally { btn.disabled = false; btn.textContent = 'Add Brand'; }
+  };
+  async function loadAdminBrands() {
+    const list = document.getElementById('brandsList');
+    list.innerHTML = '<p class="empty-state">Loading...</p>';
+    try {
+      const snap = await getDocs(collection(db, 'brands'));
+      if (snap.empty) { list.innerHTML = '<p class="empty-state">No brands added yet.</p>'; return; }
+      let html = '';
+      snap.forEach(d => {
+        const b = d.data(), open = b.status === 'open';
+        html += `<div class="creator-row">
+          <div class="creator-row-info">
+            <div class="creator-row-name">${escapeHtml(b.name)}</div>
+            <div class="creator-row-handle">${open ? '🟢 Collab Open' : '🔴 Collab Closed'}${b.instagram ? ' · @' + escapeHtml(b.instagram) : ''}</div>
+          </div>
+          <button class="btn-sm btn-approve" onclick="toggleBrand('${d.id}', ${open})">${open ? 'Close Collab' : 'Open Collab'}</button>
+          <button class="btn-sm btn-delete" onclick="deleteBrand('${d.id}')">🗑 Remove</button>
+        </div>`;
+      });
+      list.innerHTML = html;
+    } catch (err) { console.error(err); list.innerHTML = '<p class="empty-state">Failed to load brands.</p>'; }
+  }
+  window.toggleBrand = async function(id, wasOpen) {
+    await updateDoc(doc(db, 'brands', id), { status: wasOpen ? 'closed' : 'open' });
+    loadAdminBrands();
+  };
+  window.deleteBrand = async function(id) {
+    if (!confirm('Remove this brand from the site?')) return;
+    await deleteDoc(doc(db, 'brands', id));
+    loadAdminBrands();
+  };
+
   window.addReel = async function() {
     const brand = document.getElementById('reelBrand').value.trim();
     const link = document.getElementById('reelLink').value.trim();
