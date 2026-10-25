@@ -292,6 +292,60 @@ footer{background:#0F0720;padding:40px 5vw 28px}
   section{padding:60px 4vw}
   .hero{padding:80px 4vw 64px}
 }
+
+/* ── PREMIUM MOTION ── */
+.btn-outline{background:transparent;color:var(--purple);border:1.5px solid var(--purple)}
+.btn-outline:hover{background:var(--purple);color:#fff}
+.hero>*:not(.orb){position:relative;z-index:1}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;pointer-events:none;animation:floaty 14s ease-in-out infinite}
+.orb.o1{width:340px;height:340px;background:#FF4D8D;top:-80px;left:-60px}
+.orb.o2{width:300px;height:300px;background:#FF7A18;bottom:-90px;right:8%;animation-delay:-5s}
+.orb.o3{width:240px;height:240px;background:#A855F7;top:30%;right:-60px;animation-delay:-9s}
+@keyframes floaty{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-40px) scale(1.15)}}
+.marquee{background:#1A0A2E;overflow:hidden;padding:14px 0;white-space:nowrap}
+.marquee-track{display:inline-flex;gap:36px;animation:marq 40s linear infinite}
+.marquee-track span{color:rgba(255,255,255,.75);font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
+.marquee-track span.st{color:var(--orange)}
+@keyframes marq{to{transform:translateX(-50%)}}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.stories{background:#fff}
+.story-row{display:flex;gap:22px;overflow-x:auto;padding:36px 4px 10px;scrollbar-width:none}
+.story-row::-webkit-scrollbar{display:none}
+.story-item{flex:0 0 auto;width:96px;text-align:center;cursor:pointer;background:none;border:none;font-family:inherit}
+.story-ring{position:relative;width:88px;height:88px;border-radius:50%;margin:0 auto 10px;overflow:hidden;transition:transform .25s}
+.story-item:hover .story-ring{transform:scale(1.08)}
+.story-ring::before{content:'';position:absolute;inset:-50%;background:conic-gradient(#7B2FF7,#FF4D8D,#FF7A18,#7B2FF7);animation:spin 5s linear infinite}
+.story-ring.closed::before{background:#d9d3e3;animation:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.story-av{position:absolute;top:3px;left:3px;width:82px;height:82px;border-radius:50%;background:#fff;border:3px solid #fff;object-fit:cover;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.6rem;color:var(--purple)}
+.story-name{font-size:.78rem;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:5px}
+.sdot.c{background:#ef4444}
+.smodal{position:fixed;inset:0;background:rgba(10,4,22,.85);backdrop-filter:blur(8px);z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+.smodal.open{display:flex}
+.scard{width:100%;max-width:380px;min-height:540px;border-radius:24px;background:linear-gradient(160deg,#1A0A2E,#4A1499 60%,#7B2FF7);color:#fff;padding:18px 22px 26px;position:relative;animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.sbars{display:flex;gap:4px;margin-bottom:18px}
+.sbar{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden}
+.sbar i{display:block;height:100%;width:0;background:#fff}
+.sbar.done i{width:100%}
+.sbar.run i{animation:fillbar 7s linear forwards}
+@keyframes fillbar{to{width:100%}}
+.shead{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-right:90px}
+.shead img,.shead .sfb{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#fff;color:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:900}
+.shead b{font-size:1.05rem}
+.sctl{position:absolute;top:34px;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+.stag{display:inline-block;padding:5px 14px;border-radius:20px;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.stag.open{background:#22c55e;color:#04210f}
+.stag.closed{background:#ef4444;color:#fff}
+.sabout{font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.88);margin:18px 0}
+.slook{background:rgba(255,255,255,.1);border-radius:14px;padding:14px 16px;font-size:.85rem;margin-bottom:22px}
+.sbtns{display:flex;flex-direction:column;gap:10px}
+.sbtns a{text-align:center;padding:13px;border-radius:12px;font-weight:800;font-size:.9rem;text-decoration:none;color:#fff;background:rgba(255,255,255,.14)}
+.sbtns a.sa-apply{background:var(--orange)}
+.sbtns a.sa-dis{background:rgba(255,255,255,.1);color:rgba(255,255,255,.45);pointer-events:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.orb,.marquee-track,.story-ring::before{animation:none}}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -331,7 +385,7 @@ footer{background:#0F0720;padding:40px 5vw 28px}
       <li><a href="#brands" data-en="For Brands" data-hi="ब्रांड्स के लिए">For Brands</a></li>
       <li><a href="#creators" data-en="For Creators" data-hi="क्रिएटर्स के लिए">For Creators</a></li>
       <li><a href="#how" data-en="How It Works" data-hi="कैसे काम करता है">How It Works</a></li>
-      <li><a href="transparency.html" data-en="Transparency" data-hi="पारदर्शिता" style="color:var(--orange);font-weight:700">Transparency</a></li>
+      <li><a href="#brand-stories" data-en="Our Brands" data-hi="हमारे ब्रांड्स" style="color:var(--orange);font-weight:700">Our Brands</a></li>
       <li><a href="#contact" data-en="Contact" data-hi="संपर्क">Contact</a></li>
     </ul>
     <div class="nav-social">
@@ -365,6 +419,7 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 
 <!-- HERO -->
 <section class="hero" id="home">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
   <div class="hero-shapes"><span></span><span></span><span></span></div>
   <div class="hero-inner">
     <div class="hero-badge">
@@ -397,6 +452,21 @@ footer{background:#0F0720;padding:40px 5vw 28px}
     </div>
   </div>
 </div>
+
+<!-- MARQUEE -->
+<div class="marquee"><div class="marquee-track"><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span><span>Beauty</span><span class="st">✦</span><span>Fashion</span><span class="st">✦</span><span>Lifestyle</span><span class="st">✦</span><span>Skincare</span><span class="st">✦</span><span>Haircare</span><span class="st">✦</span><span>Wellness</span><span class="st">✦</span><span>Food</span><span class="st">✦</span><span>Tech</span><span class="st">✦</span></div></div>
+
+<!-- BRAND STORIES -->
+<section class="stories" id="brand-stories">
+  <div class="section-inner">
+    <div class="section-label">Our Brand Partners</div>
+    <h2>Brands <em>Building With Us</em></h2>
+    <p style="color:var(--muted);max-width:560px">Tap a brand to see if its collab is open, what it is looking for, and apply in one tap.</p>
+    <div class="story-row" id="storyRow"></div>
+    <div class="reels-empty" id="storiesEmpty" style="display:none">Brand partners are being added. Stay tuned! ✨</div>
+  </div>
+</section>
+<div class="smodal" id="storyModal" onclick="if(event.target===this)closeStory()"><div class="scard" id="storyCard"></div></div>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
@@ -549,36 +619,6 @@ footer{background:#0F0720;padding:40px 5vw 28px}
   </div>
 </section>
 
-<!-- TRUST -->
-<section class="trust">
-  <div class="section-inner">
-    <div class="section-label" style="justify-content:center;color:rgba(255,255,255,0.4)" data-en="Our Commitment" data-hi="हमारी प्रतिबद्धता">Our Commitment</div>
-    <h2><span data-en="Built on <em>Transparency</em>" data-hi="<em>पारदर्शिता</em> पर निर्मित">Built on <em>Transparency</em></span></h2>
-    <p class="trust-intro" data-en="In an industry full of hidden fees and vague promises, BrandSetu takes a different approach. Every partnership is built on honest terms — for both brands and creators." data-hi="छिपी हुई फीस और अस्पष्ट वादों से भरे उद्योग में, BrandSetu एक अलग रास्ता अपनाता है। हर साझेदारी ईमानदार शर्तों पर बनती है।">In an industry full of hidden fees and vague promises, BrandSetu takes a different approach. Every partnership is built on honest terms — for both brands and creators.</p>
-    <div class="trust-pillars">
-      <div class="pillar">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M16 4l3.09 6.26L26 11.27l-5 4.87 1.18 6.86L16 19.77l-6.18 3.23L11 16.14 6 11.27l6.91-1.01L16 4z" stroke="#A855F7" stroke-width="2" stroke-linejoin="round"/></svg>
-        <h4 data-en="Vetted Creators" data-hi="जांचे-परखे क्रिएटर्स">Vetted Creators</h4>
-        <p data-en="Every creator in our network is manually reviewed for quality and authenticity." data-hi="नेटवर्क के हर क्रिएटर को मैन्युअली क्वालिटी के लिए रिव्यू किया जाता है।">Every creator in our network is manually reviewed for quality and authenticity.</p>
-      </div>
-      <div class="pillar">
-        <svg viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#FF7A18" stroke-width="2"/><path d="M4 13h24" stroke="#FF7A18" stroke-width="2"/><path d="M9 19h6M9 22h3" stroke="#A855F7" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <h4 data-en="Clear Terms" data-hi="स्पष्ट शर्तें">Clear Terms</h4>
-        <p data-en="No hidden costs. Every deal is documented and agreed upfront before work begins." data-hi="कोई छिपे खर्च नहीं। हर डील काम शुरू होने से पहले दस्तावेज़ीकृत।">No hidden costs. Every deal is documented and agreed upfront before work begins.</p>
-      </div>
-      <div class="pillar">
-        <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="#FF4D8D" stroke-width="2"/><path d="M11 16l3.5 3.5 6.5-7" stroke="#FF4D8D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <h4 data-en="Fair Fee Sharing" data-hi="उचित शुल्क वितरण">Fair Fee Sharing</h4>
-        <p data-en="Creators earn fairly. Brands pay for real value, not inflated intermediary markups." data-hi="क्रिएटर्स उचित कमाई करते हैं। ब्रांड्स असली मूल्य के लिए भुगतान करते हैं।">Creators earn fairly. Brands pay for real value, not inflated intermediary markups.</p>
-      </div>
-      <div class="pillar">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M16 4v4M16 24v4M4 16h4M24 16h4" stroke="#7B2FF7" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="16" r="6" stroke="#7B2FF7" stroke-width="2"/><circle cx="16" cy="16" r="2" fill="#7B2FF7"/></svg>
-        <h4 data-en="Right Match Always" data-hi="हमेशा सही मिलान">Right Match Always</h4>
-        <p data-en="We only connect you with partnerships that genuinely fit — quality over quantity." data-hi="हम केवल उन साझेदारियों से जोड़ते हैं जो वास्तव में उपयुक्त हों।">We only connect you with partnerships that genuinely fit — quality over quantity.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- REVIEWS -->
 <section class="reviews" id="reviews">
@@ -594,7 +634,7 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 </section>
 
 <!-- CREATORS -->
-<section class="creators" id="creators">
+<section class="creators" id="creator-network">
   <div class="section-inner">
     <div class="section-label" data-en="Our Network" data-hi="हमारा नेटवर्क">Our Network</div>
     <h2><span data-en="Creators <em>With Us</em>" data-hi="हमारे साथ <em>क्रिएटर्स</em>">Creators <em>With Us</em></span></h2>
@@ -1333,6 +1373,64 @@ window.submitComment = async function(updateId) {
 
 if (window.__bsDb) { loadUpdates(); }
 else { window.addEventListener('bsFirebaseReady', loadUpdates, { once: true }); }
+
+// ── BRAND STORIES ──
+let brandsList = [], sIdx = 0, sTimer;
+async function loadBrandStories() {
+  const row = document.getElementById('storyRow');
+  if (!row) return;
+  try {
+    const snap = await window.__bsGetDocs(window.__bsCollection(window.__bsDb, 'brands'));
+    brandsList = [];
+    snap.forEach(d => brandsList.push(d.data()));
+    brandsList.sort((a, b) => (a.status === 'open' ? 0 : 1) - (b.status === 'open' ? 0 : 1) || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    if (!brandsList.length) { document.getElementById('storiesEmpty').style.display = 'block'; return; }
+    row.innerHTML = brandsList.map((b, i) => {
+      const open = b.status === 'open';
+      const av = b.logo ? `<img class="story-av" src="${escapeHtml(b.logo)}" alt="" />` : `<div class="story-av">${escapeHtml((b.name || '?').charAt(0).toUpperCase())}</div>`;
+      return `<button class="story-item" onclick="openStory(${i})"><div class="story-ring ${open ? '' : 'closed'}">${av}</div><div class="story-name"><span class="sdot ${open ? '' : 'c'}"></span>${escapeHtml(b.name || '')}</div></button>`;
+    }).join('');
+  } catch (e) { console.error(e); document.getElementById('storiesEmpty').style.display = 'block'; }
+}
+function fixUrl(u) { return /^https?:\/\//i.test(u) ? u : 'https://' + u; }
+window.openStory = function(i) {
+  sIdx = i;
+  const b = brandsList[i], open = b.status === 'open';
+  const handle = (b.instagram || '').replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/\/$/, '');
+  const wa = 'https://wa.me/919279700790?text=' + encodeURIComponent('Hi BrandSetu! I want to apply for the ' + (b.name || '') + ' collab. My Instagram: ');
+  const bars = brandsList.map((_, k) => `<div class="sbar ${k < i ? 'done' : k === i ? 'run' : ''}"><i></i></div>`).join('');
+  const logo = b.logo ? `<img src="${escapeHtml(b.logo)}" alt="" />` : `<div class="sfb">${escapeHtml((b.name || '?').charAt(0).toUpperCase())}</div>`;
+  document.getElementById('storyCard').innerHTML = `
+    <div class="sbars">${bars}</div>
+    <button class="sctl" style="right:62px" onclick="storyStep(-1)" aria-label="Previous">‹</button>
+    <button class="sctl" style="right:34px" onclick="storyStep(1)" aria-label="Next">›</button>
+    <button class="sctl" style="right:8px;font-size:1.2rem" onclick="closeStory()" aria-label="Close">✕</button>
+    <div class="shead">${logo}<b>${escapeHtml(b.name || '')}</b></div>
+    <span class="stag ${open ? 'open' : 'closed'}">${open ? '● Collab Open' : '● Collab Closed'}</span>
+    <p class="sabout">${escapeHtml(b.about || 'A BrandSetu partner brand.')}</p>
+    ${b.lookingFor ? `<div class="slook"><b>Looking for:</b> ${escapeHtml(b.lookingFor)}</div>` : ''}
+    <div class="sbtns">
+      ${open ? `<a class="sa-apply" href="${wa}" target="_blank" rel="noopener">Apply for this Collab →</a>` : `<a class="sa-dis">Collab Closed</a>`}
+      ${handle ? `<a href="https://instagram.com/${escapeHtml(handle)}" target="_blank" rel="noopener">Instagram @${escapeHtml(handle)}</a>` : ''}
+      ${b.website ? `<a href="${escapeHtml(fixUrl(b.website))}" target="_blank" rel="noopener">Visit Website ↗</a>` : ''}
+    </div>`;
+  document.getElementById('storyModal').classList.add('open');
+  clearTimeout(sTimer);
+  sTimer = setTimeout(() => storyStep(1), 7000);
+};
+window.storyStep = function(d) {
+  const n = sIdx + d;
+  if (n < 0) return;
+  if (n >= brandsList.length) return closeStory();
+  openStory(n);
+};
+window.closeStory = function() { clearTimeout(sTimer); document.getElementById('storyModal').classList.remove('open'); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStory(); });
+if (window.__bsDb) { loadBrandStories(); } else { window.addEventListener('bsFirebaseReady', loadBrandStories, { once: true }); }
+
+// ── SCROLL REVEAL (headings + story row) ──
+const rvObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rvObs.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll('section h2, .section-label, .story-row').forEach(el => { el.classList.add('rv'); rvObs.observe(el); });
 </script>
 </body>
 </html>
