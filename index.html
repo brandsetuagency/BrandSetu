@@ -408,6 +408,10 @@ footer{background:#0F0720;padding:40px 5vw 28px}
 @media(max-width:700px){.reel-list{flex-direction:column;overflow-x:visible;max-width:100%}.reel-chip{flex:none;width:100%}.reel-side{width:100%}}
 @media(max-width:420px){.phone{width:250px;height:520px}.reel-arrow{width:36px;height:36px}.phone-row{gap:8px}}
 @media(prefers-reduced-motion:reduce){.reel-chip,.reel-dot,.reel-tag.pop,.phone.swap{animation:none}}
+.smodal{overflow-y:auto}
+#reelStoryModal .scard{min-height:0}
+.rs-frame{width:100%;height:min(560px,68vh);border:0;border-radius:16px;background:#fff;margin-top:14px}
+.rs-link{display:block;text-align:center;margin-top:12px;color:rgba(255,255,255,.75);font-size:.8rem;text-decoration:none}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -552,6 +556,7 @@ footer{background:#0F0720;padding:40px 5vw 28px}
     <a id="qWa" class="btn btn-purple" target="_blank" rel="noopener">Also message us on WhatsApp →</a>
   </div>
 </div></div>
+<div class="smodal" id="reelStoryModal" onclick="if(event.target===this)closeReelStory()"><div class="scard" id="reelStoryCard"></div></div>
 <div class="smodal" id="storyModal" onclick="if(event.target===this)closeStory()"><div class="scard" id="storyCard"></div></div>
 
 <!-- HOW IT WORKS -->
@@ -692,6 +697,7 @@ footer{background:#0F0720;padding:40px 5vw 28px}
   <div class="section-inner">
     <div class="section-label" data-en="Collab Reels" data-hi="कोलैब रील्स">Collab Reels</div>
     <h2><span data-en="See Our <em>Work in Action</em>" data-hi="हमारा <em>काम देखें</em>">See Our <em>Work in Action</em></span></h2>
+    <div class="story-row" id="reelRings"></div>
     <div class="reels-grid" id="reelsGrid"></div>
     <div class="reels-empty" id="reelsEmpty" style="display:none">Collab reels coming soon! 🎬</div>
   </div>
@@ -1352,7 +1358,7 @@ function renderReels() {
   grid.className = 'theater-wrap';
   grid.innerHTML = `${pills}<div class="theater"><div class="phone-col"><div class="reel-tag" id="reelTag"></div><div class="phone-row"><button class="reel-arrow" onclick="stepReel(-1)" aria-label="Previous reel">‹</button><div class="phone" id="reelPhone"><div class="notch"></div><iframe id="reelFrame" title="Collab reel" loading="lazy" allowfullscreen></iframe></div><button class="reel-arrow" onclick="stepReel(1)" aria-label="Next reel">›</button></div></div><div class="reel-side"><div class="reel-list" id="reelList"></div><div class="reel-more" id="reelMore"></div></div></div>`;
   reelBrand = 'all'; reelShow = 4; reelCur = 0;
-  reelListRender(); reelTagUpdate();
+  reelListRender(); reelTagUpdate(); renderReelRings();
   new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { playReel(0); o.disconnect(); } }, { threshold: 0.2 }).observe(grid);
 }
 
@@ -1477,6 +1483,7 @@ async function loadBrandStories() {
       const av = b.logo ? `<img class="story-av" src="${escapeHtml(b.logo)}" alt="" />` : `<div class="story-av">${escapeHtml((b.name || '?').charAt(0).toUpperCase())}</div>`;
       return `<button class="story-item" onclick="openStory(${i})"><div class="story-ring ${open ? '' : 'closed'}">${av}</div><div class="story-name"><span class="sdot ${open ? '' : 'c'}"></span>${escapeHtml(b.name || '')}</div></button>`;
     }).join('');
+    renderReelRings();
   } catch (e) { console.error(e); document.getElementById('storiesEmpty').style.display = 'block'; }
 }
 function fixUrl(u) { return /^https?:\/\//i.test(u) ? u : 'https://' + u; }
@@ -1544,6 +1551,54 @@ window.submitQuick = async function(e) {
     document.getElementById('qDone').style.display = 'block';
   } catch (err) { console.error(err); alert('Something went wrong. Please try again.'); btn.disabled = false; }
 };
+
+// ── OUR WORK: brand story rings -> reel story viewer ──
+let rsBrand = '', rsList = [], rsIdx = 0;
+function brandInfo(name) { return brandsList.find(x => (x.name || '').toLowerCase() === (name || '').toLowerCase()) || {}; }
+function renderReelRings() {
+  const row = document.getElementById('reelRings');
+  if (!row || !allReels.length) return;
+  row.innerHTML = reelBrands.map((name, k) => {
+    const b = brandInfo(name), n = allReels.filter(r => (r.brand || 'Other') === name).length;
+    const av = b.logo ? `<img class="story-av" src="${escapeHtml(b.logo)}" alt="" />` : `<div class="story-av">${escapeHtml(name.charAt(0).toUpperCase())}</div>`;
+    return `<button class="story-item" onclick="openReelStory(${k})"><div class="story-ring">${av}</div><div class="story-name">${escapeHtml(name)} · ${n}</div></button>`;
+  }).join('');
+}
+window.openReelStory = function(k) {
+  rsBrand = reelBrands[k];
+  rsList = allReels.filter(r => (r.brand || 'Other') === rsBrand);
+  rsIdx = 0; renderReelStory();
+  document.getElementById('reelStoryModal').classList.add('open');
+};
+function renderReelStory() {
+  const r = rsList[rsIdx], b = brandInfo(rsBrand), src = reelEmbed(r.link);
+  const bars = rsList.map((_, k) => `<div class="sbar ${k <= rsIdx ? 'done' : ''}"><i></i></div>`).join('');
+  const logo = b.logo ? `<img src="${escapeHtml(b.logo)}" alt="" />` : `<div class="sfb">${escapeHtml(rsBrand.charAt(0).toUpperCase())}</div>`;
+  document.getElementById('reelStoryCard').innerHTML = `
+    <div class="sbars">${bars}</div>
+    <button class="sctl" style="right:62px" onclick="reelStoryStep(-1)" aria-label="Previous">‹</button>
+    <button class="sctl" style="right:34px" onclick="reelStoryStep(1)" aria-label="Next">›</button>
+    <button class="sctl" style="right:8px;font-size:1.2rem" onclick="closeReelStory()" aria-label="Close">✕</button>
+    <div class="shead">${logo}<div><b>${escapeHtml(rsBrand)}</b><div style="font-size:.74rem;opacity:.65">Reel ${rsIdx + 1} of ${rsList.length}</div></div></div>
+    ${src ? `<iframe class="rs-frame" src="${src}" title="Collab reel" allowfullscreen></iframe>` : ''}
+    <a class="rs-link" href="${escapeHtml(r.link)}" target="_blank" rel="noopener">Open on Instagram ↗</a>`;
+}
+window.reelStoryStep = function(d) {
+  const n = rsIdx + d;
+  if (n < 0) return;
+  if (n >= rsList.length) return closeReelStory();
+  rsIdx = n; renderReelStory();
+};
+window.closeReelStory = function() {
+  document.getElementById('reelStoryModal').classList.remove('open');
+  document.getElementById('reelStoryCard').innerHTML = '';
+};
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('reelStoryModal').classList.contains('open')) return;
+  if (e.key === 'Escape') closeReelStory();
+  if (e.key === 'ArrowRight') reelStoryStep(1);
+  if (e.key === 'ArrowLeft') reelStoryStep(-1);
+});
 </script>
 </body>
 </html>
