@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join BrandSetu as a Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',-apple-system,Segoe UI,Roboto,sans-serif;background:#0D0618;color:#E9E3F5;min-height:100vh;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;animation:fl 16s ease-in-out infinite}
+.o1{width:420px;height:420px;background:#7B2FF7;top:-120px;left:-100px;opacity:.5}
+.o2{width:360px;height:360px;background:#FF4D8D;bottom:-120px;right:-80px;opacity:.32;animation-delay:-6s}
+@keyframes fl{50%{transform:translate(40px,-30px) scale(1.1)}}
+.wrap{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:48px 18px 70px}
+.logo{text-align:center;font-weight:900;font-size:1.3rem;color:#fff;letter-spacing:-.02em}.logo span{color:#FF7A18}
+.badge{display:table;margin:22px auto 0;padding:6px 16px;border-radius:30px;border:1px solid rgba(255,214,107,.35);color:#FFD66B;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{text-align:center;font-size:clamp(1.9rem,6vw,2.6rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;color:#fff;margin:18px 0 12px}
+h1 em{font-style:normal;background:linear-gradient(90deg,#FF7A18,#FF4D8D);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{text-align:center;color:rgba(233,227,245,.7);line-height:1.6;max-width:440px;margin:0 auto 22px}
+.stats{display:flex;justify-content:center;gap:30px;margin-bottom:28px}.stats div{text-align:center}
+.stats b{display:block;font-size:1.4rem;color:#fff;font-weight:900}.stats span{font-size:.7rem;color:rgba(233,227,245,.55)}
+form,.ok{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:24px;padding:30px 26px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+label{display:block;color:#fff;font-size:.8rem;font-weight:700;margin:18px 0 7px;letter-spacing:.02em}label small{color:rgba(233,227,245,.5);font-weight:500}
+input,select,textarea{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);color:#fff;border-radius:12px;padding:13px 15px;font:inherit;font-size:.92rem;outline:none;transition:all .2s}
+input::placeholder,textarea::placeholder{color:rgba(233,227,245,.35)}
+input:focus,select:focus,textarea:focus{border-color:#A855F7;box-shadow:0 0 0 4px rgba(168,85,247,.2);background:rgba(255,255,255,.1)}
+select option{background:#1A0A2E;color:#fff}textarea{min-height:90px;resize:vertical}
+.drop{display:flex;align-items:center;gap:18px;padding:16px;border:1.5px dashed rgba(255,255,255,.25);border-radius:16px;background:rgba(255,255,255,.04)}
+.pv{display:none;width:84px;height:112px;border-radius:12px;object-fit:cover;flex-shrink:0;border:2px solid rgba(255,255,255,.2)}.pv[src]{display:block}
+.drop input[type=file]{border:none;background:none;padding:0;box-shadow:none;font-size:.82rem;color:rgba(233,227,245,.7)}
+input[type=file]::file-selector-button{background:linear-gradient(135deg,#7B2FF7,#FF4D8D);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-weight:700;margin-right:12px;cursor:pointer}
+#b{width:100%;margin-top:28px;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#7B2FF7,#FF4D8D 70%,#FF7A18);color:#fff;font-weight:800;font-size:1rem;font-family:inherit;cursor:pointer;box-shadow:0 14px 34px rgba(123,47,247,.45);transition:transform .2s,box-shadow .2s}
+#b:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(255,77,141,.4)}#b:disabled{opacity:.6}
+.n{font-size:.76rem;color:rgba(233,227,245,.5);margin-top:16px;text-align:center}.n a{color:#FFD66B}
+.ok{display:none;text-align:center}.ok h2{color:#fff;margin-bottom:10px}.ok p{color:rgba(233,227,245,.75);line-height:1.6}
+.ok a{display:inline-block;margin-top:18px;padding:13px 24px;background:#25D366;color:#fff;border-radius:12px;font-weight:800;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
+</style></head><body>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div class="wrap">
+  <div class="logo">Brand<span>Setu</span></div>
+  <div class="badge">Creator Network</div>
+  <h1>Get discovered by <em>growing brands</em></h1>
+  <p class="sub">Add your details and one portrait photo. Our team reviews every profile before it goes live.</p>
+  <div class="stats"><div><b>250+</b><span>Creators</span></div><div><b>20+</b><span>Brands</span></div><div><b>100+</b><span>Collabs</span></div></div>
+  <form id="f">
+    <label style="margin-top:0">Full Name *</label><input id="n" required />
+    <label>Instagram Username *</label><input id="ig" placeholder="yourusername" required />
+    <label>WhatsApp Number * <small>(private, only BrandSetu sees this)</small></label><input id="ph" type="tel" required />
+    <label>City</label><input id="ci" />
+    <label>Followers *</label><input id="fo" placeholder="e.g. 25K" required />
+    <label>Main Niche *</label><select id="ni" required><option value="">Select...</option><option>Beauty</option><option>Fashion</option><option>Lifestyle</option><option>Skincare</option><option>Haircare</option><option>Fitness</option><option>Food</option><option>Tech</option><option>Travel</option><option>Other</option></select>
+    <label>About You <small>(shown on your public profile, max 300 characters)</small></label><textarea id="ab" maxlength="300" placeholder="What kind of content do you create?"></textarea>
+    <label>Your Photo * <small>(clear portrait, brands will see this)</small></label>
+    <div class="drop"><img class="pv" id="pv" alt="" /><input id="ph2" type="file" accept="image/*" required /></div>
+    <button id="b" type="submit">Submit My Profile →</button>
+    <p class="n">By submitting you agree to our <a href="legal.html#privacy">Privacy Policy</a>.</p>
+  </form>
+  <div class="ok" id="ok"><h2>🎉 Profile received!</h2><p>Our team will review it. Once approved, you will appear on the BrandSetu website.</p><a id="wa" target="_blank" rel="noopener">Message us on WhatsApp</a></div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const db = getFirestore(initializeApp({apiKey:"AIzaSyCCoxTkjdEqJJKArv8WuaZk_W8fo1RbaI8",authDomain:"brandsetu-44bea.firebaseapp.com",projectId:"brandsetu-44bea",storageBucket:"brandsetu-44bea.firebasestorage.app",messagingSenderId:"416775002186",appId:"1:416775002186:web:fc0f845c282005fe6d6eb3"}));
+const $ = id => document.getElementById(id);
+function shrink(file, w, h) {
+  return new Promise((res, rej) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      const k = Math.max(w / img.width, h / img.height), iw = img.width * k, ih = img.height * k;
+      cv.getContext('2d').drawImage(img, (w - iw) / 2, (h - ih) / 2, iw, ih);
+      URL.revokeObjectURL(u); res(cv.toDataURL('image/jpeg', 0.8));
+    };
+    img.onerror = () => rej(new Error('bad image')); img.src = u;
+  });
+}
+$('ph2').addEventListener('change', async e => { if (e.target.files[0]) $('pv').src = await shrink(e.target.files[0], 420, 560); });
+$('f').addEventListener('submit', async e => {
+  e.preventDefault(); const b = $('b'); b.disabled = true; b.textContent = 'Submitting...';
+  try {
+    const h = $('ig').value.trim().replace(/^@/, '');
+    const photo = await shrink($('ph2').files[0], 420, 560);
+    await addDoc(collection(db, 'creatorApplications'), { fullName: $('n').value.trim(), igUsername: '@' + h, igLink: 'https://instagram.com/' + h, whatsapp: $('ph').value.trim(), city: $('ci').value.trim(), followers: $('fo').value.trim(), niches: [$('ni').value], about: $('ab').value.trim(), photo, source: 'self-join', status: 'new', submittedAt: serverTimestamp() });
+    $('wa').href = 'https://wa.me/919279700790?text=' + encodeURIComponent('Hi BrandSetu! I just submitted my creator profile. Name: ' + $('n').value.trim() + ', Instagram: @' + h);
+    $('f').style.display = 'none'; $('ok').style.display = 'block'; scrollTo(0, 0);
+  } catch (err) { console.error(err); alert('Something went wrong. Please try again.'); b.disabled = false; b.textContent = 'Submit My Profile →'; }
+});
+</script></body></html>
