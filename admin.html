@@ -169,9 +169,9 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     <div id="reelsSection" style="display:none">
       <div class="add-creator-box">
         <h3>🎬 Add Collab Reel</h3>
-        <div class="form-row"><label>Brand Name</label><input type="text" id="reelBrand" placeholder="e.g. Glowveda Skincare" /></div>
-        <div class="form-row"><label>Instagram Reel Link *</label><input type="text" id="reelLink" placeholder="https://www.instagram.com/reel/..." /></div>
-        <div class="form-row"><label>Thumbnail Image Link (optional) — <small style="font-weight:400;color:#6B5F78">postimages.org se direct link</small></label><input type="text" id="reelThumb" placeholder="https://i.postimg.cc/..." /></div>
+        <div class="form-row"><label>Brand</label><select id="reelBrand" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-family:inherit;font-size:0.9rem"></select></div>
+        <div class="form-row"><label>Instagram Reel Links * (one per line, add many at once)</label><textarea id="reelLink" rows="4" style="width:100%;padding:10px;border:1.5px solid rgba(123,47,247,0.2);border-radius:8px;font-family:inherit;font-size:0.9rem" placeholder="https://www.instagram.com/reel/..."></textarea></div>
+        <div class="form-row" style="display:none"><label>Thumbnail Image Link (optional) — <small style="font-weight:400;color:#6B5F78">postimages.org se direct link</small></label><input type="text" id="reelThumb" placeholder="https://i.postimg.cc/..." /></div>
         <button id="addReelBtn" onclick="addReel()">Add Reel</button>
       </div>
       <div id="reelsList"></div>
@@ -320,7 +320,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     });
     if (section === 'creators') loadCreators();
     if (section === 'applications') loadApplications();
-    if (section === 'reels') loadReels();
+    if (section === 'reels') { fillReelBrands(); loadReels(); }
     if (section === 'updates') loadAdminUpdates();
     if (section === 'comments') loadAdminComments('pending');
     if (section === 'brands') loadAdminBrands();
@@ -397,6 +397,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
             <div class="creator-row-name">${escapeHtml(b.name)}</div>
             <div class="creator-row-handle">${open ? '🟢 Collab Open' : '🔴 Collab Closed'}${b.instagram ? ' · @' + escapeHtml(b.instagram) : ''}</div>
           </div>
+          <button class="btn-sm btn-approve" data-n="${escapeHtml(b.name)}" onclick="goAddReel(this.dataset.n)">➕ Reels</button>
           <button class="btn-sm btn-approve" onclick="toggleBrand('${d.id}', ${open})">${open ? 'Close Collab' : 'Open Collab'}</button>
           <button class="btn-sm btn-delete" onclick="deleteBrand('${d.id}')">🗑 Remove</button>
         </div>`;
@@ -414,15 +415,26 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
     loadAdminBrands();
   };
 
+  async function fillReelBrands() {
+    const sel = document.getElementById('reelBrand');
+    try {
+      const snap = await getDocs(collection(db, 'brands'));
+      const names = []; snap.forEach(d => names.push(d.data().name));
+      sel.innerHTML = names.length ? names.map(n => `<option>${escapeHtml(n)}</option>`).join('') : '<option value="">Add a brand first (Brands tab)</option>';
+      if (window.pendingReelBrand) { sel.value = window.pendingReelBrand; window.pendingReelBrand = ''; }
+    } catch (e) { sel.innerHTML = '<option value="">Could not load brands</option>'; }
+  }
+  window.goAddReel = function(name) { window.pendingReelBrand = name; switchSection('reels'); };
+
   window.addReel = async function() {
     const brand = document.getElementById('reelBrand').value.trim();
     const link = document.getElementById('reelLink').value.trim();
     const thumbnail = document.getElementById('reelThumb').value.trim();
     const btn = document.getElementById('addReelBtn');
-    if (!link) { alert('Please enter the reel link.'); return; }
+    if (!link || !brand) { alert('Select a brand and paste the reel link(s).'); return; }
     btn.disabled = true; btn.textContent = 'Adding...';
     try {
-      await addDoc(collection(db, 'reels'), { brand, link, thumbnail, createdAt: serverTimestamp() });
+      for (const l of link.split(/\s+/).filter(Boolean)) await addDoc(collection(db, 'reels'), { brand, link: l, thumbnail, createdAt: serverTimestamp() });
       document.getElementById('reelBrand').value = '';
       document.getElementById('reelLink').value = '';
       document.getElementById('reelThumb').value = '';
