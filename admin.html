@@ -583,6 +583,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
       snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
       docs.sort((a, b) => (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0));
 
+      window.appsById = {}; docs.forEach(x => window.appsById[x.id] = x);
       let html = '';
       docs.forEach(app => {
         const isOnboarded = app.onboarded === true;
@@ -590,7 +591,7 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
         <div class="app-card" id="appcard-${app.id}">
           <div class="app-card-top">
             <div>
-              <div class="app-card-name">${escapeHtml(app.fullName || '')}</div>
+              ${app.photo ? `<img src="${app.photo}" alt="" style="width:64px;height:85px;object-fit:cover;border-radius:10px;margin-bottom:8px">` : ''}<div class="app-card-name">${escapeHtml(app.fullName || '')}</div>
               <div class="app-card-meta">${escapeHtml(app.igUsername || '')} · ${escapeHtml(app.followers || '')} followers · ${escapeHtml(app.city || '')}, ${escapeHtml(app.state || '')}</div>
             </div>
             ${isOnboarded ? '<span class="app-status-onboarded">✅ Onboarded</span>' : ''}
@@ -642,13 +643,15 @@ h1{font-size:1.6rem;font-weight:800;color:#1A0A2E;margin-bottom:8px}
   window.onboardCreator = async function(appId, name, igUsername) {
     const photoUrl = (document.getElementById(`photo-${appId}`)?.value || '').trim();
     const handle = igUsername.replace(/^@/, '');
+    const app = (window.appsById || {})[appId] || {};
     if (!confirm(`Onboard "${name}" (@${handle}) to the website?`)) return;
     try {
       // Add to creators collection
       await addDoc(collection(db, 'creators'), {
         name: name,
         instagram: handle,
-        photoUrl: photoUrl,
+        photoUrl: photoUrl || app.photo || '',
+        niche: (app.niches || []).join(', '), followers: app.followers || '', city: app.city || '', about: app.about || '',
         status: 'approved',
         createdAt: serverTimestamp()
       });
